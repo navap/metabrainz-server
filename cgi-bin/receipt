@@ -1,0 +1,8 @@
+#!/home/httpd/musicbrainz/mb_server/cgi-bin/perl -w
+
+use strict;
+no warnings qw( portable );
+use MetaBrainz::Server::Receipt;
+
+my $rec = MetaBrainz::Server::Receipt->new();
+$rec->MailReceipt(1);

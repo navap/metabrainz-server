@@ -1,0 +1,95 @@
+%# vi: set ts=2 sw=2 ft=mason :
+<%args>
+$moderator=>""
+</%args>
+
+<& /comp/sidebar, title=>'Donate money', expand=>'donate' &>
+
+<p>
+If you feel that <a href="http://musicbrainz.org">MusicBrainz</a> is a 
+worthwhile effort, please consider 
+contributing money to the MetaBrainz Foundation. The MetaBrainz Foundation
+is a <a href="http://en.wikipedia.org/wiki/Non-profit_organization"
+>501.(c).3 tax-exempt non-profit</a> based in California that
+operates the MusicBrainz project. All of your donations will be tax-deductible
+and you will receive a receipt that you can use to deduct your donation
+off your taxes if you are a US taxpayer.
+</p>
+
+<p>
+Your donations will be used to operate the MusicBrainz project.
+This includes paying for ongoing expenses like hosting, hardware,
+maintaining a modest office in San Luis Obispo, California, and possibly even
+paying a minimal salary for MetaBrainz employees working on MusicBrainz -- 
+if there is enough money in the budget to afford that.
+</p>
+
+<& /comp/section, title=>'Donating with PayPal' &>
+
+<a name="paypal"></a>
+<p>
+To send money, please use one of the convenient buttons below:
+</p>
+
+<p>
+<center>
+<table width="100%"><tr>
+<td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount=10.00"
+><img src="/images/paypal.gif" border="0"></a>
+<br>$10
+</td>
+<td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount=25.00"
+><img src="/images/paypal.gif" border="0"></a>
+<br>$25
+</form>
+</td>
+<td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount=50.00"
+><img src="/images/paypal.gif" border="0"></a>
+<br>$50
+</form>
+</td><td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount=100.00"
+><img src="/images/paypal.gif" border="0"></a>
+<br>$100
+</form>
+</td><td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount=500.00"
+><img src="/images/paypal.gif" border="0"></a>
+<br>$500
+</form>
+</td><td align="center">
+<a href="/donate/paypal_donation.html?<% $moderator ? "moderator=uri_escape($moderator)&" : "" %>amount="
+><img src="/images/paypal.gif" border="0"></a>
+<br>Other Amount
+</form>
+</td></tr></table>
+</center>
+
+<p>
+Where has my contribution gone? See our <a href="/finances/index.html">transparent finances</a>.<br>
+Who else is contributing? See our list of <a href="/finances/donations.html">donors</a>.
+</p>
+
+<& /comp/section, title=>'Donating money in other ways' &>
+
+<p>
+If you would like to donate cash using a check or a bank draft, please send
+them to:
+</p>
+
+<blockquote>
+MetaBrainz Foundation<br>
+1435 Tanglewood Dr.<br>
+San Luis Obispo, CA 93401<br>
+United States<br>
+</blockquote>
+
+<p>
+Please make checks payable to the <b>MetaBrainz Foundation</b>.
+</p>
+
+
+<& /comp/footer &>

@@ -1,0 +1,373 @@
+/* styles for common elements and element combinations */
+
+body
+{
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	color: #000;
+}
+
+a img { border: 0 }
+form { margin: 0 }
+
+a,
+a:link,
+a:visited
+{
+	color: #2b4bff;
+	text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active
+{
+	color: #3f66f8;
+	text-decoration: underline;
+}
+
+/* This is equivalent to /comp/title, i.e. class "title" in brainz.css */
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* This is equivalent to /comp/section */
+h2
+{
+	background: #fff url(/images/header-bg-orangefade.gif) repeat-y;
+	border: 0 solid #ffecac;
+	border-width: 0px 0 1px 1px;
+	font-size: 100%;
+	font-weight: bold;
+	padding: 0.1em 0.3em;
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+h3
+{
+	font-weight: bold;
+	font-size: 100%;
+	text-decoration: underline;
+	margin-top: 1.5em;
+}
+
+.notice
+{
+	border: 3px outset #f0efff;
+	margin: 1em;
+	font-weight: bold;
+	padding: 1em;
+	background-color: #f0efff;
+	color: #000;
+}
+
+.error
+{
+	border: 3px outset red;
+	margin: 1em;
+	font-weight: bold;
+	padding: 1em;
+	background-color: #fee;
+	color: #000;
+}
+
+ul, ol
+{
+	margin-left: 1em;
+	margin-right: 2em;
+}
+
+ul.SpacedList li,
+ol.SpacedList li
+{
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+kbd
+{
+	background: #efefff;
+	color: #000;
+	font-family: monospace;
+}
+
+kbd.KbdBlock
+{
+	margin: 1em 2em;
+	padding: 0.5em;
+	background: #efefff;
+	color: #000;
+	font-family: monospace;
+	display: block;
+}
+
+/* Useful rules */
+
+.CenterChildren *
+{
+	vertical-align: middle;
+}
+
+.SpacedRows td,
+.SpacedRows th
+{
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	empty-cells: show;
+}
+
+.SpacedColumns td,
+.SpacedColumns th
+{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	empty-cells: show;
+}
+
+.TopAlignCells td,
+.TopAlignCells th
+{
+	vertical-align: baseline;
+}
+
+/* page-specific things */
+
+.StatsTable .SubHeading
+{
+	padding-top: 0.5em;
+	text-align: left;
+}
+
+.StatsTable .StatName
+{
+	text-align: left;
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+.StatsTable .NumberCell
+{
+	text-align: right;
+	font-size: 10pt;
+}
+
+.DownloadLink
+{
+	margin-left: 2em;
+}
+
+.DownloadLink *
+{
+	vertical-align: middle;
+}
+
+.DownloadLink img
+{
+	margin-right: 1em;
+}
+
+.DownloadList
+{
+	list-style-image: url(/images/download.gif);
+}
+
+/* A generic single border blue box */
+.BlueBox
+{
+	border-width: 1px;
+        border-style: solid;
+	padding: 5px;
+	margin: 1em;
+	background-color: #f4f4ff;
+}
+
+/* /comp/artisttitle */
+
+.ArtistTitle
+{
+	border-width: 1px;
+   border-style: solid;
+	padding: 5px;
+	margin-top: 1em;
+	background-color: #f0efff;
+	width: 100%;
+}
+
+.ArtistTitleNameSortname
+{
+	margin-left: 48px;
+	text-indent: -48px;
+}
+
+.ArtistTitleIcon
+{
+	vertical-align: bottom;
+	margin: 0 12px 0 4px;
+}
+
+.ArtistTitleName
+{
+	/* font : Bold 12pt Verdana, Geneva, Arial, Helvetica, sans-serif; color : #000000; text-decoration : none;} */
+	font-size: 200%;
+	color: black !important;
+}
+
+.ArtistTitleSortname {}
+
+.ArtistTitleSortname:before { content: "(" }
+.ArtistTitleSortname:after { content: ")" }
+
+.ArtistTitleLinks
+{
+	margin-left: 3em;
+	text-indent: -3em;
+}
+
+.ArtistTitleMod
+{
+	padding: 5px;
+   background-color: #ffecd6;
+	border-width: 0 1px 1px 1px;
+   border-style: solid;
+	margin-bottom: 1em;
+	width: 100%;
+}
+
+/* /comp/album* */
+
+.AlbumTitle
+{
+	padding: 5px;
+	background-color: #f0efff;
+	border-width: 1px;
+   border-style: solid;
+}
+
+.AlbumInfo
+{
+   margin-right: 140;
+	background-color: #dddddd;
+}
+
+.AlbumTitleLinks
+{
+	margin-left: 3em;
+	text-indent: -3em;
+}
+
+.AlbumTitleMod
+{
+	padding: 5px;
+   background-color: #ffecd6;
+	border-width: 0 1px 1px 1px;
+   border-style: solid;
+}
+
+.AlbumTitleAmazon
+{
+   padding: 5px;
+   background-color: #eeeecc;
+	border-width: 0 1px 1px 1px;
+   border-style: solid;
+}
+
+/* /comp/albumtype */
+
+h2.AlbumType
+{
+	background: #736dab;
+	background-image: none;
+	color: #fff;
+	border: 1px solid black;
+	width: 100%;
+	font-weight: bold;
+	padding: 0.3em;
+	margin: 1em 0;
+}
+
+/* [ A | list | of | links ] */
+
+.LinksRow
+{
+	text-align: center;
+	margin-top: 0.7em;
+	margin-bottom: 0.7em;
+}
+
+/* Search Results */
+#SearchResults td,
+#SearchResults th
+{
+	padding-left: 0.8em;
+	padding-right: 0.8em;
+}
+
+/* Album meta, whereever it is shown */
+td.trk, td.did, td.trm, td.rdate { padding: 0.3em 1em; text-align: right }
+td.trk *, td.did *, td.trm *, td.rdate * { vertical-align: middle }
+
+/* "Compact" showartist page */
+
+#CompactReleaseList td.rst { padding: 0 1.5em; text-align: center } /* release status */
+#CompactReleaseList td.rtag { padding: 0 1em; text-align: center } /* tag box */
+#CompactReleaseList td.rdate { padding: 0 1em; text-align: center } /* date */
+#CompactReleaseList td.rname { padding: 0 1em } /* release name */
+
+#CompactReleaseList tr.ev { background-color: #eee } /* 'even' rows */
+
+#CompactReleaseList th h2 { margin: 1em 0 0.5em }
+
+/* Mod Pending */
+.mp { background: #ffc }
+
+/* Tag Lookup */
+
+#TagLookupTrackResults td.tlen.good { color: green; font-weight: bold }
+#TagLookupTrackResults td.tlen.ok { color: blue }
+#TagLookupTrackResults td.tlen.bad { color: red }
+
+/* Mod Detail */
+
+.SupersededVote { background: #ccc }
+
+/* Reports */
+
+#Report tr.shade { background-color: #eee; }
+#Report td.head { background-color: #eee; font-weight: bold;
+                  padding-top: 0.5em; padding-bottom: 0.5em; }
+#Report td.link { text-align: center; white-space: nowrap; }
+
+/* donors */
+table.donors { border-collapse: collapse; margin: 1em; }
+table.donors td { padding: 0.2em; border: 1px solid #999 }
+.donorseven { background-color: #eee; }
+.donorsodd { }
+
+/* style.html */
+ol.StyleGuideList li { margin: 1em 0 }
+ol.StyleGuideList li .StyleExample { font-weight: bold }
+ol.StyleGuideList li li { list-style-type: none }
+
+ol.StyleGuideList li ul { padding-left: 1em }
+ol.StyleGuideList li blockquote { margin-left: 2em }
+
+#ShowPageURL
+{
+	text-align: center;
+	color: #ddd;
+	font-size: 8pt;
+	margin-top: 8pt;
+	margin-bottom: -8pt;
+}
+
+table.cdtocinfo td { text-align: right; padding: 0 1em }
+table.cdtocinfo tr.ev { background-color: #eee } /* 'even' rows */
+
+td.discidlength { background-color: #ffecd6; text-align: right }
+
+/* eof */

@@ -1,0 +1,55 @@
+%# vi: set ts=4 sw=4 ft=mason :
+<%perl>
+
+return $m->comp("/comp/header_small", title => $pagetitle || $title)
+	if $pnotes{'ispopup'};
+
+my $nosidebar = UserPreference::get('nosidebar');
+
+$m->comp(
+	"/comp/header",
+	title => $pagetitle || $title,
+	head => $head,
+	nosidebar => $nosidebar,
+);
+
+unless ($nosidebar)
+{
+
+</%perl>
+<& /comp/sidebarsectiontop, title=>'Site Menu' &>
+<& /comp/sitemenu &>
+
+<& /comp/sidebarsection, title=>'MetaBrainz Sites' &>
+<& /comp/sidebarareabegin &>
+<& /comp/sites &>
+<& /comp/sidebarareaend &>
+
+<& /comp/sidebarsection, title=>'Donate' &>
+<& /comp/sidebarareabegin &>
+<& /comp/donate &>
+<& /comp/sidebarareaend &>
+
+<& /comp/sidebarsection, title=>'Hosting' &>
+<& /comp/sidebarareabegin &>
+<& /comp/hosting &>
+<& /comp/sidebarareaend &>
+
+   </td>
+% }
+   <td bgcolor="FFFFFF" align="left" valign="top">
+      <table cellpadding="15" cellspacing="0" border="0" width="100%" >
+      <tr>
+         <td align="left" valign="top" class="body" width="100%">
+	 <a id="maincontent"></a>
+
+%if($title ne '' and not $noh1) {
+	<h1><% $title %></h1>
+%}
+
+<%args>
+$title=>'MusicBrainz'
+$pagetitle=>''
+$noh1=>0
+$head=>undef
+</%args>
