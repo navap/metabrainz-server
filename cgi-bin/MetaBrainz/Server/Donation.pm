@@ -195,6 +195,23 @@ sub GetDonations
             $offset, $num));
 }
 
+sub GetHighestDonations
+{
+    my ($self, $offset, $num) = @_;
+
+    my $sql = MetaBrainz::Server::Sql->new($self->{DBH});
+    $sql->AutoCommit();
+    $sql->Do("SET TIME ZONE LOCAL");
+    return ($sql->SelectSingleValue("SELECT count(*) FROM donation"),
+            $sql->SelectListOfHashes("SELECT id, first_name, last_name, amount, moderator, anon, fee, memo,
+                                             to_char(payment_date, 'YYYY-MM-DD HH24:MI TZ') as payment_date
+                                        FROM donation 
+                                    ORDER BY amount DESC 
+                                      OFFSET ? 
+                                       LIMIT ?", 
+            $offset, $num));
+}
+
 sub GetDonationStats
 {
     my ($self) = @_;
