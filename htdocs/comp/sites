@@ -1,5 +1,5 @@
 <div style="text-align: center; margin: 1em 0">
-<a href="http://musicbrainz.org"><span class="menulink">MusicBrainz</span></a>
+<a href="http://musicbrainz.org" class="menulink">MusicBrainz</a>
 </div>
 
 %# vi: set ts=8 sw=2 ft=mason :
