@@ -54,14 +54,14 @@ Year-to-date: <b>$ <% $ytd %></b>
 %           } 
 %      } 
        </td>
-       <td align="right" valign="top">$&nbsp;<% $item->{fee} %></td>
-       <td align="right" valign="top">$&nbsp;<% $item->{amount} %></td>
+       <td align="right" valign="top">$&nbsp;<% sprintf "%.2f", $item->{fee} %></td>
+       <td align="right" valign="top">$&nbsp;<% sprintf "%.2f", $item->{amount} %></td>
      </tr>
 % }
      <tr class="donorseven">
        <td align="right" colspan="2">Total this page:</td>
-       <td align="right" valign="top"><b>$&nbsp;<% $total_fee %></b></td>
-       <td align="right" valign="top"><b>$&nbsp;<% $total_don %></b></td>
+       <td align="right" valign="top"><b>$&nbsp;<% sprintf "%.2f", $total_fee %></b></td>
+       <td align="right" valign="top"><b>$&nbsp;<% sprintf "%.2f", $total_don %></b></td>
      </tr>
 </table>
 

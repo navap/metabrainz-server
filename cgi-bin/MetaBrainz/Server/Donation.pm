@@ -206,7 +206,7 @@ sub GetHighestDonations
             $sql->SelectListOfHashes("SELECT id, first_name, last_name, amount, moderator, anon, fee, memo,
                                              to_char(payment_date, 'YYYY-MM-DD HH24:MI TZ') as payment_date
                                         FROM donation 
-                                    ORDER BY amount DESC 
+                                    ORDER BY amount DESC, payment_date ASC 
                                       OFFSET ? 
                                        LIMIT ?", 
             $offset, $num));
