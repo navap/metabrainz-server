@@ -18,13 +18,16 @@ use Scalar::Util qw( reftype weaken );
 	],
 	{ name => "Finances",				url => "/finances" },
 	[
+		{ name => "Fundraiser",				url => "/finances/fundraiser.html" },
 		{ name => "Finances",				url => "/finances/index.html" },
 		{ name => "Donations",				url => "/finances/donations.html" },
 		{ name => "Highest donors",				url => "/finances/hi_donors.html" },
+		{ name => "Hist. Donations",				url => "/finances/historical_donations.html" },
 	],
 	{ name => "Donate",				url => "/donate/index.html" },
 	[
 		{ name => "PayPal donation",		url => "/donate/paypal_donation.html" },
+		{ name => "Sponsors",		url => "/donate/sponsors.html" },
 	],
 	{ name => "Contact",				url => "/contact/index.html" },
 	[

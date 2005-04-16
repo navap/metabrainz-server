@@ -11,13 +11,13 @@
 	position: absolute;
 	top: 20px;
 	right: 0.3em;
-	color: #FFBA58;
+	color: #ABD150;
 	font-size: 35px;
 }
 
 .NavBarCell
 {
-	background: #FFBA58 url(/images/topmenu_BG.gif) bottom left repeat-x;
+	background: #ABD150 url(/images/topmenu_BG.gif) bottom left repeat-x;
 }
 
 .SideBarCell
@@ -27,7 +27,7 @@
 
 .footer
 {
-	background: #FFBA58 url(/images/topmenu_BG.gif) top left repeat-x;
+	background: #ABD150 url(/images/topmenu_BG.gif) top left repeat-x;
 	text-align: center;
 }
 
@@ -83,7 +83,7 @@
 	width: 100%;
 	border: 1px solid black;
 	border-width: 1px 0;
-	background: #FFF15B;
+	background: #ABD150;
 	padding: 0.2em 0;
 	text-align: center;
 }
@@ -98,7 +98,7 @@
 #FooterBar a:link,
 #FooterBar a:visited
 {
-	color: #772015;
+        color: #39338D;
 	text-decoration: none;
 	display: block;
 	width: 100%;
