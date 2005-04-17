@@ -25,7 +25,7 @@
 
 use strict;
 
-package MusicBrainz::Server::Mail;
+package MetaBrainz::Server::Mail;
 
 use Encode qw( from_to );
 
@@ -135,11 +135,11 @@ sub open
 
 	use Symbol qw( gensym );
 	my $fh = gensym;
-	tie *$fh, 'MusicBrainz::Server::Mail::net_smtp_stream', $smtp;
+	tie *$fh, 'MetaBrainz::Server::Mail::net_smtp_stream', $smtp;
 	$fh;
 }
 
-package MusicBrainz::Server::Mail::net_smtp_stream;
+package MetaBrainz::Server::Mail::net_smtp_stream;
 
 sub TIEHANDLE
 {

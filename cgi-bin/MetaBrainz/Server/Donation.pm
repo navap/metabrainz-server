@@ -174,8 +174,8 @@ sub Insert
         return $err;
     }
     $self->SetId($sql->GetLastInsertId('donation'));
-    MusicBrainz::Server::Cache->delete($self->_GetDonationStatsKey);
-    MusicBrainz::Server::Cache->delete($self->_GetFundraiserStatsKey);
+    MetaBrainz::Server::Cache->delete($self->_GetDonationStatsKey);
+    MetaBrainz::Server::Cache->delete($self->_GetFundraiserStatsKey);
 
     return "";
 }
@@ -218,7 +218,7 @@ sub GetDonationStats
 {
     my ($self) = @_;
 
-    my $values = MusicBrainz::Server::Cache->get($self->_GetDonationStatsKey);
+    my $values = MetaBrainz::Server::Cache->get($self->_GetDonationStatsKey);
     return split ',', $values if $values;
 
     my $sql = MetaBrainz::Server::Sql->new($self->{DBH});
@@ -241,7 +241,7 @@ sub GetDonationStats
                                         WHERE ? = EXTRACT(MONTH FROM payment_date) and 
                                               ? = EXTRACT(YEAR FROM payment_date)", $cur_month, $cur_year);
 
-    $values = MusicBrainz::Server::Cache->set($self->_GetDonationStatsKey, "$mtd,$ytd,$pmtd");
+    $values = MetaBrainz::Server::Cache->set($self->_GetDonationStatsKey, "$mtd,$ytd,$pmtd");
 
     return ($mtd, $ytd, $pmtd);
 }
@@ -250,13 +250,13 @@ sub GetFundraiserTotal
 {
     my ($self) = @_;
 
-    my $value = MusicBrainz::Server::Cache->get($self->_GetFundraiserStatsKey);
+    my $value = MetaBrainz::Server::Cache->get($self->_GetFundraiserStatsKey);
     return $value if $value;
 
     my $sql = MetaBrainz::Server::Sql->new($self->{DBH});
     my $total = $sql->SelectSingleValue("select sum(amount) from donation where payment_date > '20050419'");
     $total = 0 if (not $total);
-    MusicBrainz::Server::Cache->set($self->_GetFundraiserStatsKey, $total);
+    MetaBrainz::Server::Cache->set($self->_GetFundraiserStatsKey, $total);
 
     return ($total);
 }
