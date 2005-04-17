@@ -87,6 +87,7 @@ sub SetMemo             { $_[0]{memo} = $_[1] }
 sub GetMemo             { $_[0]{memo} }
 
 sub _GetDonationStatsKey { "meb_donation_stats" };
+sub _GetFundraiserStatsKey { "meb_fundraiser_stats" };
 
 ################################################################################
 # Data Retrieval
@@ -174,6 +175,7 @@ sub Insert
     }
     $self->SetId($sql->GetLastInsertId('donation'));
     MusicBrainz::Server::Cache->delete($self->_GetDonationStatsKey);
+    MusicBrainz::Server::Cache->delete($self->_GetFundraiserStatsKey);
 
     return "";
 }
@@ -242,6 +244,21 @@ sub GetDonationStats
     $values = MusicBrainz::Server::Cache->set($self->_GetDonationStatsKey, "$mtd,$ytd,$pmtd");
 
     return ($mtd, $ytd, $pmtd);
+}
+
+sub GetFundraiserTotal
+{
+    my ($self) = @_;
+
+    my $value = MusicBrainz::Server::Cache->get($self->_GetFundraiserStatsKey);
+    return $value if $value;
+
+    my $sql = MetaBrainz::Server::Sql->new($self->{DBH});
+    my $total = $sql->SelectSingleValue("select sum(amount) from donation where payment_date > '20050419'");
+    $total = 0 if (not $total);
+    MusicBrainz::Server::Cache->set($self->_GetFundraiserStatsKey, $total);
+
+    return ($total);
 }
 
 sub Delete
