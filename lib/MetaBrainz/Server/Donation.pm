@@ -212,6 +212,15 @@ sub GetHighestDonations
                                       OFFSET ? 
                                        LIMIT ?", 
             $offset, $num));
+# yalaforge says this will group all the donations from the same person together.
+# I haven't had the chance to tinker with this yet
+#select d.*, s.asum
+#     from donation d, (
+#                             select moderator, sum(amount) as asum
+#                             from donation
+#                             group by moderator) s
+#     where d.id = s.moderator 
+#     order by s.asum desc;
 }
 
 sub GetDonationStats
