@@ -40,6 +40,28 @@ CREATE TABLE donation_historical
     payment_date        TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
+CREATE TABLE "Pending"
+(
+    "SeqId"             SERIAL,
+    "TableName"         VARCHAR NOT NULL,
+    "Op"                CHARACTER,
+    "XID"               INT4 NOT NULL
+);
+
+CREATE TABLE "PendingData"
+(
+    "SeqId"             INT4 NOT NULL,
+    "IsKey"             BOOL NOT NULL,
+    "Data"              VARCHAR
+);
+
+CREATE TABLE replication_control
+(
+    id                              SERIAL,
+    current_schema_sequence         INTEGER NOT NULL,
+    current_replication_sequence    INTEGER,
+    last_replication_date           TIMESTAMP WITH TIME ZONE
+);
 
 COMMIT;
 
