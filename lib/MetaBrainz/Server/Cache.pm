@@ -43,7 +43,7 @@ sub _new
 
 	eval {
 		require Cache::Memcached;
-		$cache = Cache::Memcached->new(&Defs::CACHE_OPTIONS);
+		$cache = Cache::Memcached->new(&MetaBrainz::Server::Defs::CACHE_OPTIONS);
 	} or do {
 		warn "Failed to create cache: $@"
 			if $@ ne "";
@@ -71,11 +71,11 @@ sub _get
 	my $data = $cache->get(_encode_key($key), @args);
 	if (not defined $data)
 	{
-		carp "Cache MISS on $key" if &Defs::CACHE_DEBUG;
+		carp "Cache MISS on $key" if &MetaBrainz::Server::Defs::CACHE_DEBUG;
 		return undef;
 	}
 
-	if (&Defs::CACHE_DEBUG)
+	if (&MetaBrainz::Server::Defs::CACHE_DEBUG)
 	{
 		#use Data::Dumper;
 		#local $Data::Dumper::Terse = 1;
@@ -130,7 +130,7 @@ sub _set
 	my $cache = $class->_new
 		or return undef;
 
-	if (&Defs::CACHE_DEBUG)
+	if (&MetaBrainz::Server::Defs::CACHE_DEBUG)
 	{
 		my $METHOD = uc $method;
 
@@ -151,7 +151,7 @@ sub _set
 		}
 	}
 
-	$opts[0] = &Defs::CACHE_DEFAULT_EXPIRES
+	$opts[0] = &MetaBrainz::Server::Defs::CACHE_DEFAULT_EXPIRES
 		if not defined $opts[0];
 	$cache->$method(_encode_key($key), $data, @opts);
 }
@@ -160,10 +160,10 @@ sub delete
 {
 	my ($class, $key, $time) = @_;
 	my $timer = MetaBrainz::Server::CacheTimer->new("delete", $key, $time) if CACHE_TIMER;
-	$time = &Defs::CACHE_DEFAULT_DELETE unless defined $time;
+	$time = &MetaBrainz::Server::Defs::CACHE_DEFAULT_DELETE unless defined $time;
 	my $cache = $class->_new
 		or return undef;
-	carp "Cache DELETE $key $time" if &Defs::CACHE_DEBUG;
+	carp "Cache DELETE $key $time" if &MetaBrainz::Server::Defs::CACHE_DEBUG;
 	eval { $cache->delete(_encode_key($key), $time) };
 	warn "Cache delete $key failed: $@\n" if $@;
 }
