@@ -1,4 +1,4 @@
-#!/home/httpd/musicbrainz/mb_server/cgi-bin/perl -w
+#!/home/httpd/musicbrainz/mb_server/bin/perl -w
 #____________________________________________________________________________
 #
 #   MusicBrainz -- the open internet music database
@@ -25,7 +25,7 @@
 use strict;
 
 use FindBin;
-use lib "$FindBin::Bin/../cgi-bin";
+use lib "$FindBin::Bin/../lib";
 
 use MetaBrainz::Server::Defs;
 use MetaBrainz::Server::MetaBrainz;

@@ -1,4 +1,4 @@
-#!/home/httpd/musicbrainz/mb_server/cgi-bin/perl -w
+#!/home/httpd/musicbrainz/mb_server/bin/perl -w
 
 use strict;
 no warnings qw( portable );

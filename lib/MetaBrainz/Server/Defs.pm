@@ -29,7 +29,7 @@ package MetaBrainz::Server::Defs;
 # Directories
 ################################################################################
 
-# The Server Root, i.e. the parent directory of admin, cgi-bin and htdocs
+# The Server Root, i.e. the parent directory of admin, cgi-bin, lib, and htdocs
 sub MB_SERVER_ROOT	{ "/home/httpd/metabrainz/metabrainz" }
 # The htdocs directory
 sub HTDOCS_ROOT		{ MB_SERVER_ROOT() . "/htdocs" }
