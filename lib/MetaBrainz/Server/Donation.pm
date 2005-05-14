@@ -206,10 +206,10 @@ sub GetHighestDonations
     $sql->Do("SET TIME ZONE LOCAL");
     return ($sql->SelectSingleValue("SELECT count(*) FROM (SELECT first_name, last_name, moderator, sum(amount) as asum, sum(fee) as fsum 
                                                              FROM donation 
-                                                         GROUP BY first_name, last_name, moderator, amount) as tmp"),
+                                                         GROUP BY first_name, last_name, moderator) as tmp"),
             $sql->SelectListOfHashes("SELECT first_name, last_name, moderator, sum(amount) as amount, sum(fee) as fee
                                         FROM donation 
-                                    GROUP BY first_name, last_name, moderator, amount 
+                                    GROUP BY first_name, last_name, moderator
                                     ORDER BY amount desc
                                       OFFSET ? 
                                        LIMIT ?", 
