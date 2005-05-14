@@ -204,23 +204,16 @@ sub GetHighestDonations
     my $sql = MetaBrainz::Server::Sql->new($self->{DBH});
     $sql->AutoCommit();
     $sql->Do("SET TIME ZONE LOCAL");
-    return ($sql->SelectSingleValue("SELECT count(*) FROM donation"),
-            $sql->SelectListOfHashes("SELECT id, first_name, last_name, amount, moderator, anon, fee, memo,
-                                             to_char(payment_date, 'YYYY-MM-DD HH24:MI TZ') as payment_date
+    return ($sql->SelectSingleValue("SELECT count(*) FROM (SELECT first_name, last_name, moderator, sum(amount) as asum, sum(fee) as fsum 
+                                                             FROM donation 
+                                                         GROUP BY first_name, last_name, moderator, amount) as tmp"),
+            $sql->SelectListOfHashes("SELECT first_name, last_name, moderator, sum(amount) as amount, sum(fee) as fee
                                         FROM donation 
-                                    ORDER BY amount DESC, payment_date ASC 
+                                    GROUP BY first_name, last_name, moderator, amount 
+                                    ORDER BY amount desc
                                       OFFSET ? 
                                        LIMIT ?", 
             $offset, $num));
-# yalaforge says this will group all the donations from the same person together.
-# I haven't had the chance to tinker with this yet
-#select d.*, s.asum
-#     from donation d, (
-#                             select moderator, sum(amount) as asum
-#                             from donation
-#                             group by moderator) s
-#     where d.id = s.moderator 
-#     order by s.asum desc;
 }
 
 sub GetDonationStats

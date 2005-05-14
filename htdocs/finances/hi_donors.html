@@ -24,7 +24,6 @@ my ($total_don, $total_fee) = (0, 0);
 
 <table width="100%" class="donors">
      <tr>
-       <td><b>Date</b></td>
        <td><b>Donor (moderator)</b></td>
        <td><b>Fee</b></td>
        <td><b>Amount</b></td>
@@ -32,7 +31,6 @@ my ($total_don, $total_fee) = (0, 0);
 % foreach my $item (@$donations) {
 %    $total_don += $item->{amount}; $total_fee += $item->{fee};
      <tr class="donors<% ("odd", "even")[++$. % 2] %>">
-       <td valign="top"><nobr><% $item->{payment_date} %>   </nobr></td>
        <td width="80%" valign="top">
 %      if ($item->{anon}) {
             Anonymous
@@ -52,7 +50,7 @@ my ($total_don, $total_fee) = (0, 0);
      </tr>
 % }
      <tr class="donorseven">
-       <td align="right" colspan="2">Total this page:</td>
+       <td align="right">Total this page:</td>
        <td align="right" valign="top"><b>$&nbsp;<% sprintf "%.2f", $total_fee %></b></td>
        <td align="right" valign="top"><b>$&nbsp;<% sprintf "%.2f", $total_don %></b></td>
      </tr>
