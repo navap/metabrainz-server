@@ -9,6 +9,7 @@ use Scalar::Util qw( reftype weaken );
 	{ name => "About",					url => "/about" },
 	[
 		{ name => "About",			        url => "/about/index.html" },
+	    { name => "Data Licenses",			url => "/about/license.html" },
 		{ name => "Privacy policy",			url => "/about/privacy.html" },
 		{ name => "White papers",			url => "/about/papers.html" },
 	],
@@ -29,7 +30,6 @@ use Scalar::Util qw( reftype weaken );
 		{ name => "PayPal donation",		url => "/donate/paypal_donation.html" },
 		{ name => "Sponsors",		url => "/donate/sponsors.html" },
 	],
-	{ name => "Data License",				url => "/license/index.html" },
 	{ name => "Contact",				url => "/contact/index.html" },
 	[
 		{ name => "Contact us",		url => "/contact/index.html" },

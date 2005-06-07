@@ -1,0 +1,94 @@
+%# vi: set ts=2 sw=2 ft=mason :
+<& /comp/sidebar, title=>'Data licenses' &>
+
+<p>
+Before you read this page, we encourage you top read the 
+<a href="http://musicbrainz.org/about/licenses.html">MusicBrainz data license page</a> 
+to give you an overview of the MusicBrainz data and the 
+licenses that apply to the data.
+</p>
+
+<h2>Data snapshots</h2>
+
+<p>
+The data snapshots (full exports) of the MusicBrainz data are generated twice a week and
+can be <a href="http://musicbrainz.org/products/server/download.html">downloaded</a> from MusicBrainz.
+The MusicBrainz data license page outlines the nitty gritty details of what you can
+do with these data snapshots, so we encourage you to read the
+<a href="http://musicbrainz.org/about/licenses.html">page</a>.
+</p>
+
+<p>
+The data is organized so that the most useful data is available in the Public Domain. This
+means that you can do anything with the core data -- no restrictions, no need to ask for
+permission -- please go download a copy today! The ancillary data such as the search indexes
+and the moderation (edits to the database) are less useful outside of the MusicBrainz context
+and therefore are licensed under a Creative Commons license.
+</p>
+
+<p>
+As long as you don't need to have the data be kept up to date, we suspect that the Public Domain
+data will suffice for our users and that no commercial licenses will be necessary. However, if you need
+data that is constantly updated, then read on for the live data feed.
+</p>
+
+<h2>Live data-feed</h2>
+
+<p>
+The live data-feed enables a server running a PostgreSQL database in conjunction with the MusicBrainz 
+server software to automatically stay
+in synch with the main server. A mirror (slave) server starts off with the latest data snapshot and then 
+downloads replication packets from the main
+MusicBrainz FTP site at hourly intervals and applies them to the local database. This enables the mirror
+server to never be more than about an hour of sync with the main server.
+</p>
+
+<p>
+The live data-feed is licensed under the Creative Commons 
+<href="http://creativecommons.org/licenses/by-nc-sa/2.0/">Attribution-NonCommercial-ShareAlike 2.0</a>
+license. This allows free non-commerical use of the live data-feed. Commercial users, will need to 
+<a href="/contact">contact</a> the MetaBrainz Foundation to arrange for a commercial use license
+for the live data feed.
+</p>
+
+<p>
+For commercial use the data must be hosted by the company that wishes to use the data for their 
+own products. This puts all reliability/availability issues into the hands of the commercial user,
+so that the user can themselves ensure the proper availability of the data for their own customers.
+The MetaBrainz Foundation currently does not offer services to host the data for
+commercial customers
+</p>
+
+<h3>What constitutes non-commercial and commercial use?</h3>
+
+<p>
+The Creative Commons license defines non-commercial use as:
+</p>
+
+<blockquote>
+<p>
+You may not exercise any of the rights granted to You in Section 3 above in any manner that is 
+primarily intended for or directed toward commercial advantage or private monetary compensation. 
+The exchange of the Work for other copyrighted works by means of digital file-sharing or otherwise 
+shall not be considered to be intended for or directed toward commercial advantage or private 
+monetary compensation, provided there is no payment of any monetary compensation in connection 
+with the exchange of copyrighted works.
+</p>
+</blockquote>
+
+<p>
+This definition is very much in favor of categorizing as any use that involves <b>any</b>
+money as commercial. We do not interpret the license quite so strictly. For instance,
+if you have banner ads on your site in hopes to cover your bandwidth costs, but you don't 
+charge for anything else on your site, we don't consider that commercial use. We are still
+working with the Creative Commons to define a clear set of uses that would be considered
+non-commercial and a set of uses that would be considered commercial. In the near future
+we hope to document the clear-cut cases here on the site and then decide other cases that
+fall in-between on a case by case basis.
+</p>
+
+<p>
+For now, if you have questions about commercial use, please <a href="/contact">contact us</a.
+</p>
+
+<& /comp/footer &>
