@@ -128,8 +128,8 @@ except IOError:
 header = fp.readline()
 headerCols = [ x.strip() for x in header.split('\t') ]
 
-out.write('!TRNS   DATE    ACCNT   NAME    CLASS   AMOUNT  MEMO\n')
-out.write('!SPL    DATE    ACCNT   NAME    AMOUNT  MEMO\n')
+out.write('!TRNS\tDATE\tACCNT\tNAME\tCLASS\tAMOUNT\tMEMO\n')
+out.write('!SPL\tDATE\tACCNT\tNAME\tAMOUNT\tMEMO\n')
 out.write('!ENDTRNS\n')
 
 for line in fp.readlines():
