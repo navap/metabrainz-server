@@ -84,6 +84,7 @@ sub PAYPAL_COMPLETE_LOG_FILE { "/var/log/metabrainz/paypal/complete" };
 sub PAYPAL_PENDING_LOG_FILE { "/var/log/metabrainz/paypal/pending" };
 sub PAYPAL_ERROR_LOG_FILE { "/var/log/metabrainz/paypal/error" };
 sub PAYPAL_INVALID_LOG_FILE { "/var/log/metabrainz/paypal/invalid" };
+sub PAYPAL_NONDONATION_LOG_FILE { "/var/log/metabrainz/paypal/nondonation" };
 
 ################################################################################
 # Mail Settings

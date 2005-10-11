@@ -76,7 +76,8 @@ elsif ($res->content eq 'VERIFIED')
     {
         LogTransaction(\%params, "not primary email", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
-    elsif ($params{'payment_status'} eq 'Completed')
+    elsif ($params{'payment_status'} eq 'Completed' &&
+           lc($params{business}) eq 'donations@metabrainz.org')
     {
         $params{email} = $params{payer_email}; 
         $params{address_postcode} = $params{address_zip}; 
@@ -88,6 +89,7 @@ elsif ($res->content eq 'VERIFIED')
         $params{fee} = $params{mc_fee};
 
         $don->Insert(%params);
+
         my $rec = MetaBrainz::Server::Receipt->new($mb->{DBH});
         $rec->MailReceipt($don->GetId());
 
@@ -96,6 +98,10 @@ elsif ($res->content eq 'VERIFIED')
     elsif ($params{'payment_status'} eq 'Pending')
     {
         LogTransaction(\%params, "payment pending", &MetaBrainz::Server::Defs::PAYPAL_PENDING_LOG_FILE);
+    }
+    elsif (lc($params{'business'}) eq 'payment@metabrainz.org')
+    {
+        LogTransaction(\%params, "non donation received", &MetaBrainz::Server::Defs::PAYPAL_NONDONATION_LOG_FILE);
     }
     else
     {
