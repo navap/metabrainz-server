@@ -77,7 +77,7 @@ elsif ($res->content eq 'VERIFIED')
         LogTransaction(\%params, "not primary email", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
     elsif ($params{'payment_status'} eq 'Completed' &&
-           lc($params{business}) eq 'donations@metabrainz.org')
+           lc($params{business}) ne 'payment@metabrainz.org')
     {
         $params{email} = $params{payer_email}; 
         $params{address_postcode} = $params{address_zip}; 
