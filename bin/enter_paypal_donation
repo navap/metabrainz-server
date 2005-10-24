@@ -1,0 +1,36 @@
+#!/home/httpd/metabrainz/metabrainz/bin/perl -w
+
+use strict;
+no warnings qw( portable );
+use MetaBrainz::Server::Defs;
+use MetaBrainz::Server::Donation;
+use MetaBrainz::Server::MetaBrainz;
+use MetaBrainz::Server::Receipt;
+use Data::Dumper;
+
+my %data;
+while(defined(my $line = <>))
+{
+   my ($k, $v) = split "=", $line;
+   chomp($v);
+   $k =~ s/\s*(.*?)\s*/$1/;
+   $data{$k} = $v;
+}
+
+$data{email} = $data{payer_email}; 
+$data{address_postcode} = $data{address_zip}; 
+$data{paypal_trans_id} = $data{txn_id}; 
+$data{moderator} = $data{custom};
+$data{contact} = (lc($data{option_name1}) eq 'yes') ? 'y' : 'n';
+$data{anon} = (lc($data{option_name2}) eq 'yes') ? 'y' : 'n';
+$data{amount} = $data{mc_gross} - $data{mc_fee};
+$data{fee} = $data{mc_fee};
+
+my $mb = new MetaBrainz::Server::MetaBrainz(1);
+$mb->Login();
+my $don = MetaBrainz::Server::Donation->new($mb->{DBH});
+
+$don->Insert(%data);
+
+my $rec = MetaBrainz::Server::Receipt->new($mb->{DBH});
+$rec->MailReceipt($don->GetId());
