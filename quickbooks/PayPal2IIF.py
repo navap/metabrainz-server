@@ -101,6 +101,11 @@ def income(data, out, gross):
         account = incomeAccounts[x] 
         out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
         out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], -gross))
+        # Print out the Fee SPL, if any
+        if data["Fee"] and toFloat(data["Fee"]) < 0.0:
+            account = expenseAccounts[expenseAccountPayPal]
+            fee = abs(toFloat(data["Fee"]))
+            out.write('SPL\t"%s"\t"%s"\tFee\t%.2f\n' % (data['Date'], account, fee))
         out.write('ENDTRNS\n')
         return
 
@@ -111,13 +116,14 @@ def income(data, out, gross):
 
     out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
     out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], -gross))
-    out.write('ENDTRNS\n')
 
     # Print out the Fee SPL, if any
     if data["Fee"] and toFloat(data["Fee"]) < 0.0:
         account = expenseAccounts[expenseAccountPayPal]
         fee = abs(toFloat(data["Fee"]))
         out.write('SPL\t"%s"\t"%s"\tFee\t%.2f\n' % (data['Date'], account, fee))
+
+    out.write('ENDTRNS\n')
 
 def expense(data, out, gross):
     '''called when we have an expense to write'''
