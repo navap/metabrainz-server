@@ -37,7 +37,8 @@ expenseAccounts = ("Expense - Hosting - CCCP",
 incomeAccountDonation = 0
 incomeAccountInterest = 1
 incomeAccounts = ("Income - Donations - PayPal", 
-                  "Income - Bank - Interest")
+                  "Income - Bank - Interest",
+                  "Income - Licenses - Live Data F")
 
 bankAccountHOB = 0
 bankAccountPayPal = 1
@@ -65,6 +66,27 @@ def selectExpenseAccount():
 
     return x
 
+def selectIncomeAccount():
+    index = 1
+    print "0) Skip this transaction"
+    for acc in incomeAccounts:
+        print "%d) %s" % (index, acc)
+        index += 1
+
+    while True:
+        x = None
+        try:
+            x = int(raw_input("select account> "))
+        except ValueError:
+            print "Invalid selection"
+            continue
+
+        x -= 1
+        if x >= -1 and x < len(incomeAccounts):
+            break
+
+    return x
+
 def toFloat(svalue):
     return float(svalue.replace(",", ""))
                   
@@ -74,11 +96,12 @@ def income(data, out, gross):
     if data['Type'].find('Payment') == -1 and data['Type'].find('Dividend') == -1:
         print "Received some other type of credit: %s, %s, %.2f, %s" % (data['Date'], data['Name'], gross, data['Type'])
         print "Which account should be credited:"
-        x = selectExpenseAccount()
+        x = selectIncomeAccount()
         if x == -1: return
-        account = expenseAccounts[x] 
+        account = incomeAccounts[x] 
         out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
         out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], -gross))
+        out.write('ENDTRNS\n')
         return
 
     if data['Name'] == senderPayPalMoneyMarket:
@@ -88,6 +111,7 @@ def income(data, out, gross):
 
     out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
     out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], -gross))
+    out.write('ENDTRNS\n')
 
     # Print out the Fee SPL, if any
     if data["Fee"] and toFloat(data["Fee"]) < 0.0:
@@ -109,6 +133,7 @@ def expense(data, out, gross):
     
     out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
     out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], abs(gross)))
+    out.write('ENDTRNS\n')
 
 lineNum = 1
 fp = None
@@ -152,7 +177,6 @@ for line in fp.readlines():
     else:
         expense(data, out, gross)
 
-    out.write('ENDTRNS\n')
 
     lineNum+=1
 
