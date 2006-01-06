@@ -44,6 +44,10 @@ Year-to-date: <b>$ <% $ytd %></b>
 %      if ($item->{anon}) {
             Anonymous
 %      } else {
+%           # HACK ALERT!
+%           if ($item->{first_name} eq 'Carita' && $item->{last_name} eq 'Holm') {
+%               $item->{first_name} = "Zaphod"; $item->{last_name} = "Beeblebrox";
+%           }
             <b><% $item->{first_name} %> <% $item->{last_name} %></b>
 %           if ($item->{moderator}) {
                 ( <a href="http://musicbrainz.org/user/view.html?modname=<% $item->{moderator} %>"><%
