@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -o errexit
+
+METABRAINZ=`dirname $0`/..
+NOW=`date +'%Y%m%d-%H%M%S'`
+
+TMPDIR=/tmp/metabrainz-$NOW
+trap '/bin/rm -rf $TMPDIR' EXIT HUP INT QUIT KILL
+mkdir --mode=0700 "$TMPDIR"
+
+$METABRAINZ/bin/ExportAllTables --output-dir=$TMPDIR --compress --without-replication
+chown -R mbbackup:root $TMPDIR
+chmod -R go= $TMPDIR
+mv $TMPDIR /home/mbbackup/metabrainz-dump-$NOW
+
+# eof
