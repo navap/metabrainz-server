@@ -1,44 +1,33 @@
 #!/usr/bin/env python
 
-b = '''
-Input:
-
-Date     Time    Time Zone       Name    Type    Status  Currency        Gross   Fee     Net     From Email Address      To Email Address        Transaction ID  Shipping Address  Address Status  Item Title      Item ID         Shipping and Handling Amount    Insurance Amount        Sales Tax       Option 1 Name   Option 1
-Value    Option 2 Name   Option 2 Value  Auction Site    Buyer ID        Item URL        Closing Date    Reference Txn ID        Invoice Number  Custom Number   Receipt ID        Balance         Contact Phone Number
-"6/28/2005"     "12:42:01"      "PDT"   "Steve Jinks"   "Web Accept Payment Received"   "Completed"     "USD"   "10.00" "-0.69" "9.31"  "Steve@e-jinks.net"     "donations@musicbrainz.org"       "7V808331G80193445"     ""      ""      "10 Dollar Donation to MusicBrainz"     "TEN_BUCKS"     "0.00"  ""      "0.00"  ""      ""        ""      ""      ""      ""      ""      ""      ""      ""      ""      ""      "974.79"        ""
-'''
-
-a = '''
-Output:
-
-!TRNS   DATE    ACCNT   NAME    CLASS   AMOUNT  MEMO
-!SPL    DATE    ACCNT   NAME    AMOUNT  MEMO
-!ENDTRNS
-TRNS    "2/28/2005"     "Account - Bank - PayPal"       "Benjamin Woodacre"     "Web Accept Payment Received"   9.41    "10 Dollar Donation to MusicBrainz"
-SPL     "2/28/2005"     "Income - Donations - PayPal"   "Benjamin Woodacre"     -10.00
-SPL     "2/28/2005"     "Expense - Bank - PayPal"       Fee     0.59
-'''
-
 import sys, os
+import decimal
 
 senderPayPalMoneyMarket = 'PayPal - Money Market'
 senderBankAccount = 'Bank Account'
 
-expenseAccountPayPal = 1
-expenseAccounts = ("Expense - Hosting - CCCP",
+expenseAccountPayPal = 2
+expenseAccounts = ("Expense - Hosting - DWNI",
+                   "Expense - Hosting - CCCP",
                    "Expense - Bank - PayPal",
                    "Expense - Hardware",
                    "Expense - Development",
                    "Expense - Marketing",
                    "Expense - Internet",
                    "Expense - Travel",
-                   "Expense - Supplies")
+                   "Expense - Supplies",
+                   "Expense - Gifts",
+                   "Expense - Events",
+                   "Income - Donations - PayPal") 
 
 incomeAccountDonation = 0
 incomeAccountInterest = 1
 incomeAccounts = ("Income - Donations - PayPal", 
                   "Income - Bank - Interest",
-                  "Income - Licenses - Live Data F")
+                  "Income - Licenses - Live Data F",
+                  "Expense - Hardware",
+                  "Expense - Gifts"
+                 )
 
 bankAccountHOB = 0
 bankAccountPayPal = 1
@@ -93,6 +82,7 @@ def toFloat(svalue):
 def income(data, out, gross):
     '''called when we have income to write'''
 
+    if data['Type'].startswith('Update'): return 
     if data['Type'].find('Payment') == -1 and data['Type'].find('Dividend') == -1:
         print "Received some other type of credit: %s, %s, %.2f, %s" % (data['Date'], data['Name'], gross, data['Type'])
         print "Which account should be credited:"
@@ -139,9 +129,104 @@ def expense(data, out, gross):
     
     out.write('TRNS\t"%s"\t"Account - Bank - PayPal"\t"%s"\t"%s"\t%s\t"%s"\n' % (data['Date'], data['Name'], data['Type'], data['Net'], data['Item Title']))
     out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], abs(gross)))
+
+    # Print out the Fee SPL, if any
+    if data["Fee"] and toFloat(data["Fee"]) > 0.0:
+        account = expenseAccounts[expenseAccountPayPal]
+        fee = abs(toFloat(data["Fee"]))
+        out.write('SPL\t"%s"\t"%s"\tFee\t%.2f\n' % (data['Date'], account, -fee))
+
     out.write('ENDTRNS\n')
 
-lineNum = 1
+def get_ref_transactions(transactions, id):
+    trans = []
+    for tran in transactions:
+        if tran['Reference Txn ID'] ==  id: trans.append(tran)
+
+    return trans
+
+def remove_transaction(transactions, id):
+    index = 0
+    for tran in transactions:
+        if tran['Transaction ID'] ==  id: 
+            del transactions[index]
+            break
+        index += 1
+
+    return transactions
+
+def update_transaction(transactions, update):
+    index = 0
+    for tran in transactions:
+        if tran['Transaction ID'] ==  update['Transaction ID']: 
+            transactions[index] = update
+            break
+        index += 1
+
+    return transactions
+
+def currency_conversion(transactions):
+    '''
+    Find, combine and convert EUR transactions to US dollars so that quickbooks doesn't have to know about them.
+    '''
+ 
+    cont = True
+    while cont:
+        cont = False
+        index = 0
+        for tran in transactions:
+            # Find the base transaction
+            if tran['Currency'] == "EUR" and tran['Type'] != 'Currency Conversion':
+
+                # Get the dependent transactions -- the ones that give the info on the currency conversion
+                depTransactions = get_ref_transactions(transactions, tran['Transaction ID'])
+                assert len(depTransactions) == 2, "Too many dependent currency conversion transactions found"
+
+                eurAmount = ""
+                if depTransactions[0]['Currency'] == 'EUR':
+                    eurAmount = depTransactions[0]['Gross']
+                elif depTransactions[1]['Currency'] == 'EUR':
+                    eurAmount = depTransactions[1]['Gross']
+                else:
+                    assert 0, "Cannot find EUR value"
+
+                usdAmount = ""
+                if depTransactions[0]['Currency'] == 'USD':
+                    usdAmount = depTransactions[0]['Gross']
+                elif depTransactions[1]['Currency'] == 'USD':
+                    usdAmount = depTransactions[1]['Gross']
+                else:
+                    assert 0, "Cannot find EUR value"
+
+                twoPlaces = decimal.Decimal('0.01')
+                tenPlaces = decimal.Decimal('0.0000000001')
+
+                con = decimal.Context(prec=28, rounding=decimal.ROUND_HALF_UP)
+                eurAmount = con.abs(decimal.Decimal(eurAmount, con))
+                usdAmount = con.abs(decimal.Decimal(usdAmount, con))
+                ratio = con.divide(eurAmount, usdAmount)
+
+                tran['Fee'] = str(con.minus(con.divide(con.abs(decimal.Decimal(tran['Fee'], con)), ratio)).quantize(twoPlaces))
+                tran['Gross'] = str(con.divide(con.abs(decimal.Decimal(tran['Gross'], con)), ratio).quantize(twoPlaces))
+                tran['Net'] = str(con.divide(con.abs(decimal.Decimal(tran['Net'], con)), ratio).quantize(twoPlaces))
+                tran['Currency'] = 'USD';
+
+                print "Fee: %s" % tran['Fee']
+                print "Gross: %s" % tran['Gross']
+                print "Net: %s vs %s" % (tran['Net'], str(usdAmount.quantize(twoPlaces)))
+
+                assert tran['Net'] != usdAmount, "Converted amount does not match PayPal's amount"
+
+                # Put the updated transaction into the list of transactions
+                transactions = update_transaction(transactions, tran)
+
+                # Remove the two conversion transactions
+                for t in depTransactions:
+                    transactions = remove_transaction(transactions, t['Transaction ID'])
+
+                cont = True
+                break
+
 fp = None
 try:
     fp = open(sys.argv[1], "r")
@@ -163,6 +248,7 @@ out.write('!TRNS\tDATE\tACCNT\tNAME\tCLASS\tAMOUNT\tMEMO\n')
 out.write('!SPL\tDATE\tACCNT\tNAME\tAMOUNT\tMEMO\n')
 out.write('!ENDTRNS\n')
 
+trans = []
 for line in fp.readlines():
     cols = line.split('\t')
     index = 0
@@ -172,6 +258,11 @@ for line in fp.readlines():
         data[headerCols[index]] = col
         index += 1
 
+    trans.append(data)
+
+currency_conversion(trans)
+
+for data in trans:
     # Skip over pending transactions
     if data['Status'] == 'Pending': 
         print "Skipping: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
@@ -182,9 +273,6 @@ for line in fp.readlines():
         income(data, out, gross)
     else:
         expense(data, out, gross)
-
-
-    lineNum+=1
 
 fp.close()
 out.close()
