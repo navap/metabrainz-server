@@ -192,11 +192,15 @@ def currency_conversion(transactions):
 
                 usdAmount = ""
                 if depTransactions[0]['Currency'] == 'USD':
-                    usdAmount = depTransactions[0]['Gross']
+                    usdAmount = depTransactions[0]['Gross'].strip()
                 elif depTransactions[1]['Currency'] == 'USD':
-                    usdAmount = depTransactions[1]['Gross']
+                    usdAmount = depTransactions[1]['Gross'].strip()
                 else:
                     assert 0, "Cannot find EUR value"
+
+                # Remove any commas from the inputs
+                usdAmount = usdAmount.replace(',', '')
+                eurAmount = eurAmount.replace(',', '')
 
                 twoPlaces = decimal.Decimal('0.01')
                 tenPlaces = decimal.Decimal('0.0000000001')
@@ -206,14 +210,14 @@ def currency_conversion(transactions):
                 usdAmount = con.abs(decimal.Decimal(usdAmount, con))
                 ratio = con.divide(eurAmount, usdAmount)
 
-                tran['Fee'] = str(con.minus(con.divide(con.abs(decimal.Decimal(tran['Fee'], con)), ratio)).quantize(twoPlaces))
-                tran['Gross'] = str(con.divide(con.abs(decimal.Decimal(tran['Gross'], con)), ratio).quantize(twoPlaces))
-                tran['Net'] = str(con.divide(con.abs(decimal.Decimal(tran['Net'], con)), ratio).quantize(twoPlaces))
+                tran['Fee'] = str(con.minus(con.divide(con.abs(decimal.Decimal(tran['Fee'].replace(',', ''), con)), ratio)).quantize(twoPlaces))
+                tran['Gross'] = str(con.divide(con.abs(decimal.Decimal(tran['Gross'].replace(',', ''), con)), ratio).quantize(twoPlaces))
+                tran['Net'] = str(con.divide(con.abs(decimal.Decimal(tran['Net'].replace(',', ''), con)), ratio).quantize(twoPlaces))
                 tran['Currency'] = 'USD';
 
-                print "Fee: %s" % tran['Fee']
-                print "Gross: %s" % tran['Gross']
-                print "Net: %s vs %s" % (tran['Net'], str(usdAmount.quantize(twoPlaces)))
+                #print "Fee: %s" % tran['Fee']
+                #print "Gross: %s" % tran['Gross']
+                #print "Net: %s vs %s" % (tran['Net'], str(usdAmount.quantize(twoPlaces)))
 
                 assert tran['Net'] != usdAmount, "Converted amount does not match PayPal's amount"
 
