@@ -26,7 +26,8 @@ incomeAccounts = ("Income - Donations - PayPal",
                   "Income - Bank - Interest",
                   "Income - Licenses - Live Data F",
                   "Expense - Hardware",
-                  "Expense - Gifts"
+                  "Expense - Gifts",
+                  "Expense - Marketing"
                  )
 
 bankAccountHOB = 0
@@ -82,8 +83,9 @@ def toFloat(svalue):
 def income(data, out, gross):
     '''called when we have income to write'''
 
-    if data['Type'].startswith('Update'): return 
-    if data['Type'].find('Payment') == -1 and data['Type'].find('Dividend') == -1:
+    if data['Type'].find('Payment') == -1 and \
+       data['Type'].find('Dividend') == -1 and \
+       data['Type'].find('Update') == -1:
         print "Received some other type of credit: %s, %s, %.2f, %s" % (data['Date'], data['Name'], gross, data['Type'])
         print "Which account should be credited:"
         x = selectIncomeAccount()
@@ -267,9 +269,15 @@ for line in fp.readlines():
 currency_conversion(trans)
 
 for data in trans:
+
     # Skip over pending transactions
-    if data['Status'] == 'Pending': 
-        print "Skipping: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
+    if data['Status'] in ['Pending', 'Uncleared']: 
+        print "** Skipping pending: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
+        continue
+
+    # Skip over reversed transactions
+    if data['Status'] == 'Completed' and data['Type'] == 'Reversal':
+        print "** Skipping reversed: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
         continue
 
     gross = toFloat(data['Gross'])
