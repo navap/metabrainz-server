@@ -76,9 +76,13 @@ elsif ($res->content eq 'VERIFIED')
     {
         LogTransaction(\%params, "not primary email", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
-    elsif ($params{email} =~ /^yewm200/)
+    elsif ($params{email} =~ /^yewm200/ || $params{email} eq "gypsy313309496@aol.com")
     {
         LogTransaction(\%params, "blocked donor", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
+    }
+    elsif ($params{amount} < .50)
+    {
+        LogTransaction(\%params, "Tiny donation", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
     elsif ($params{'payment_status'} eq 'Completed' &&
            lc($params{business}) ne 'payment@metabrainz.org')
