@@ -76,7 +76,7 @@ elsif ($res->content eq 'VERIFIED')
     {
         LogTransaction(\%params, "not primary email", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
-    elsif ($params{email} =~ /^yewm200/ || $params{email} eq "gypsy313309496@aol.com")
+    elsif ($params{email} =~ /^yewm200/ || $params{email} eq 'gypsy313309496@aol.com')
     {
         LogTransaction(\%params, "blocked donor", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
