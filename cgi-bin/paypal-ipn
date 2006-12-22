@@ -38,6 +38,12 @@ $r->read($query, $size);
 
 $query .= '&cmd=_notify-validate';
 
+my $ua = new LWP::UserAgent;
+my $req = new HTTP::Request 'POST','http://www.paypal.com/cgi-bin/webscr';
+$req->content_type('application/x-www-form-urlencoded');
+$req->content($query);
+my $res = $ua->request($req);
+
 # split posted variables into pairs
 my %params;
 my @pairs = split(/&/, $query);
@@ -48,21 +54,6 @@ foreach my $pair (@pairs)
     $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
     $params{$name} = $value;
 }
-if ($params{amount} < .50)
-{
-    LogTransaction(\%params, "Tiny donation", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
-    $r->status(200);
-    $r->content_type("text/plain");
-    $r->header_out('Content-Length', 0);
-    $r->send_http_header();
-    return;
-}
-
-my $ua = new LWP::UserAgent;
-my $req = new HTTP::Request 'POST','http://www.paypal.com/cgi-bin/webscr';
-$req->content_type('application/x-www-form-urlencoded');
-$req->content($query);
-my $res = $ua->request($req);
 
 if ($res->is_error) 
 {
@@ -88,6 +79,10 @@ elsif ($res->content eq 'VERIFIED')
     elsif ($params{email} =~ /^yewm200/ || $params{email} eq 'gypsy313309496@aol.com')
     {
         LogTransaction(\%params, "blocked donor", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
+    }
+    elsif ($params{amount} < .50)
+    {
+        LogTransaction(\%params, "Tiny donation", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
     elsif ($params{'payment_status'} eq 'Completed' &&
            lc($params{business}) ne 'payment@metabrainz.org')
