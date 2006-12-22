@@ -80,7 +80,7 @@ elsif ($res->content eq 'VERIFIED')
     {
         LogTransaction(\%params, "blocked donor", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
-    elsif ($params{amount} < .50)
+    elsif ($params{payment_gross} < .50)
     {
         LogTransaction(\%params, "Tiny donation", &MetaBrainz::Server::Defs::PAYPAL_ERROR_LOG_FILE);
     }
