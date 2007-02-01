@@ -56,6 +56,51 @@ h3
 	margin-top: 1.5em;
 }
 
+.report
+{
+        margin-left: 2em;
+        margin-right: 2em;
+}
+.sec1
+{
+	font-size: 130%;
+	font-weight: bold;
+        border-bottom: 1px solid black;
+        margin-bottom: .5em;
+        margin-top: 2em;
+}
+
+.sec2
+{
+	font-size: 110%;
+	font-weight: bold;
+        margin-top: 2em;
+}
+
+.figurelabel
+{
+        font-size: 90%;
+	font-style: italic;
+        border-bottom: 1px solid grey;
+}
+
+.figure 
+{
+   padding: .4em;
+   margin: .4 em;
+   border: 1px grey solid;
+}
+
+.small-text td
+{
+   font-size: 75%;
+};
+
+.rfloat 
+{
+   float: right;
+}
+
 .notice
 {
 	border: 3px outset #f0efff;
