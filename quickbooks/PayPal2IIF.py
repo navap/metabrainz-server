@@ -18,6 +18,7 @@ expenseAccounts = ("Expense - Hosting - DWNI",
                    "Expense - Supplies",
                    "Expense - Gifts",
                    "Expense - Events",
+                   "Expense - Software",
                    "Income - Donations - PayPal") 
 
 incomeAccountDonation = 0
@@ -27,7 +28,8 @@ incomeAccounts = ("Income - Donations - PayPal",
                   "Income - Licenses - Live Data F",
                   "Expense - Hardware",
                   "Expense - Gifts",
-                  "Expense - Marketing"
+                  "Expense - Marketing",
+                  "Expense - Software"
                  )
 
 bankAccountHOB = 0
@@ -178,16 +180,16 @@ def currency_conversion(transactions):
         index = 0
         for tran in transactions:
             # Find the base transaction
-            if tran['Currency'] == "EUR" and tran['Type'] != 'Currency Conversion':
+            if tran['Currency'] in ["EUR", "GBP"] and tran['Type'] != 'Currency Conversion':
 
                 # Get the dependent transactions -- the ones that give the info on the currency conversion
                 depTransactions = get_ref_transactions(transactions, tran['Transaction ID'])
                 assert len(depTransactions) == 2, "Too many dependent currency conversion transactions found"
 
                 eurAmount = ""
-                if depTransactions[0]['Currency'] == 'EUR':
+                if depTransactions[0]['Currency'] in ["EUR", "GBP"]:
                     eurAmount = depTransactions[0]['Gross']
-                elif depTransactions[1]['Currency'] == 'EUR':
+                elif depTransactions[1]['Currency'] in ["EUR", "GBP"]:
                     eurAmount = depTransactions[1]['Gross']
                 else:
                     assert 0, "Cannot find EUR value"
@@ -198,7 +200,7 @@ def currency_conversion(transactions):
                 elif depTransactions[1]['Currency'] == 'USD':
                     usdAmount = depTransactions[1]['Gross'].strip()
                 else:
-                    assert 0, "Cannot find EUR value"
+                    assert 0, "Cannot find USD value"
 
                 # Remove any commas from the inputs
                 usdAmount = usdAmount.replace(',', '')
