@@ -50,7 +50,21 @@ if (exists $args{moderator} )
                                        ORDER BY nag DESC 
                                           LIMIT 1", $args{moderator});
 
-    $out = "-1" if ($out eq '');
+    if ($out eq '')
+    {
+        $out = "-1,0\n" 
+    }
+    else
+    {
+        if ($out >= 0)
+        {
+            $out = "0,$out\n";
+        }
+        else
+        {
+            $out = "1,$out\n";
+        }
+    }
     $out .= "\n";
     $r->status(200);
 }
