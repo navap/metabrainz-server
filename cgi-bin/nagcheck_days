@@ -46,7 +46,7 @@ if (exists $args{moderator} )
 
     $out = $sql->SelectSingleValue("SELECT ((amount + fee) * $days_per_dollar) - ((extract(epoch from now()) - extract(epoch from payment_date)) / 86400) as nag
                                            FROM donation 
-                                          WHERE moderator = ? 
+                                          WHERE lower(moderator) = lower(?)
                                        ORDER BY nag DESC 
                                           LIMIT 1", $args{moderator});
 
