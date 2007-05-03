@@ -36,7 +36,7 @@ incomeAccounts = ("Income - Donations - PayPal",
 
 bankAccountHOB = 0
 bankAccountPayPal = 1
-bankAccounts = ("Account - Bank - HOB Checking", 
+bankAccounts = ("Account - Bank - WaMu Checking2", 
                 "Account - Bank - PayPal")
 
 def selectExpenseAccount():
