@@ -29,7 +29,9 @@ incomeAccounts = ("Income - Donations - PayPal",
                   "Expense - Hardware",
                   "Expense - Gifts",
                   "Expense - Marketing",
-                  "Expense - Software"
+                  "Expense - Travel",
+                  "Expense - Software",
+                  "Expense - Bank - PayPal",
                  )
 
 bankAccountHOB = 0
@@ -135,10 +137,13 @@ def expense(data, out, gross):
     out.write('SPL\t"%s"\t"%s"\t"%s"\t%.2f\n' % (data['Date'], account, data['Name'], abs(gross)))
 
     # Print out the Fee SPL, if any
-    if data["Fee"] and toFloat(data["Fee"]) > 0.0:
+    if toFloat(data["Fee"]) < 0.0:
+        print "**** negative fee!"
+    if data["Fee"]:
         account = expenseAccounts[expenseAccountPayPal]
-        fee = abs(toFloat(data["Fee"]))
-        out.write('SPL\t"%s"\t"%s"\tFee\t%.2f\n' % (data['Date'], account, -fee))
+        fee = toFloat(data["Fee"]) * -1
+        #if toFloat(data["Fee"]) > 0.0:
+        out.write('SPL\t"%s"\t"%s"\tFee\t%.2f\n' % (data['Date'], account, fee))
 
     out.write('ENDTRNS\n')
 
@@ -263,14 +268,32 @@ for line in fp.readlines():
     data = {}
     for col in cols:
         if col[0] == '"': col = col[1:len(col) - 1]
-        data[headerCols[index]] = col
+        try:
+            data[headerCols[index]] = col
+        except IndexError:
+            pass
+           
         index += 1
 
     trans.append(data)
 
 currency_conversion(trans)
+trans.reverse()
 
+# Ignore temprary hold placed, but not removed
+
+prevBalance = ""
 for data in trans:
+
+    if prevBalance == data['Balance']:
+        print "** Skipping non balance affecting: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
+        continue
+    prevBalance= data['Balance'];
+
+    # Skip over bogus 1 cent transactions
+    if data['Currency'] == 'USD' and data['Gross'] == '0.01':
+        print "** Skipping bogus: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
+        continue
 
     # Skip over pending transactions
     if data['Status'] in ['Pending', 'Uncleared']: 
@@ -278,9 +301,9 @@ for data in trans:
         continue
 
     # Skip over reversed transactions
-    if data['Status'] == 'Completed' and data['Type'] == 'Reversal':
-        print "** Skipping reversed: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
-        continue
+#    if data['Status'] == 'Completed' and data['Type'] == 'Reversal':
+#        print "** Skipping reversed: %s - %s - %s" % (data['Name'], data['Gross'], data['Status'])
+#        continue
 
     gross = toFloat(data['Gross'])
     if gross > 0.0:
