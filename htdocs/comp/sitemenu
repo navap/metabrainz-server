@@ -30,8 +30,7 @@ use Scalar::Util qw( reftype weaken );
 	],
 	{ name => "Donate",				url => "/donate/index.html" },
 	[
-		{ name => "PayPal donation",		url => "/donate/paypal_donation.html" },
-		{ name => "Sponsors",		url => "/donate/sponsors.html" },
+		{ name => "PayPal donation",		url => "/donate/paypal_donation.html" }
 	],
 	{ name => "Contact",				url => "/contact/index.html" },
 	[
