@@ -203,7 +203,7 @@ sub CreateReceipt
 
 
     $text->selectFont($Helvetica, 12);         
-    $text->rprintln("1435 Tanglewood Dr."); 
+    $text->rprintln("3565 South Higuera St., Suite B"); 
     $text->rprintln("San Luis Obispo, CA 93401"); 
     $text->lf;
     $text->rprintln('donations@metabrainz.org'); 
