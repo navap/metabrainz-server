@@ -5,6 +5,9 @@ import decimal
 
 senderPayPalMoneyMarket = 'PayPal - Money Market'
 senderBankAccount = 'Bank Account'
+taggerCustomers = ("JThink ltd",
+                   "Mathias Kunter")
+taggerAccount = "Income - Affiliate - Tagger"
 
 expenseAccountPayPal = 2
 expenseAccounts = ("Expense - Hosting - DWNI",
@@ -34,9 +37,10 @@ incomeAccounts = ("Income - Donations - PayPal",
                   "Expense - Bank - PayPal",
                  )
 
+
 bankAccountHOB = 0
 bankAccountPayPal = 1
-bankAccounts = ("Account - Bank - WaMu Checking2", 
+bankAccounts = ("Account - Bank - MCB Checking", 
                 "Account - Bank - PayPal")
 
 def selectExpenseAccount():
@@ -107,6 +111,8 @@ def income(data, out, gross):
 
     if data['Name'] == senderPayPalMoneyMarket:
         account = incomeAccounts[incomeAccountInterest]
+    elif data['Name'] in taggerCustomers:
+        account = taggerAccount
     else:
         account = incomeAccounts[incomeAccountDonation]
 
