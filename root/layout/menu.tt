@@ -1,0 +1,25 @@
+<ul>
+  <li>
+    <a href="#">About</a>
+    <ul>
+      <li><a href="#">Data Licenses</a></li>
+      <li><a href="#">Customers</a></li>
+      <li><a href="#">Annual Report</a></li>
+      <li><a href="#">Supporters</a></li>
+      <li><a href="#">Privacy policy</a></li>
+      <li><a href="#">White papers</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#">News</a>
+  </li>
+  <li>
+    <a href="#">Finances</a>
+  </li>
+  <li>
+    <a href="#">Donate</a>
+  </li>
+  <li>
+    <a href="#">Contact</a>
+  </li>
+</ul>

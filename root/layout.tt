@@ -1,0 +1,51 @@
+[%- PROCESS 'lib/manifest.tt' -%]
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>[% title %][% " - " IF title && !nosuffix %][% "MetaBrainz Foundation" IF !nosuffix %]</title>
+    [% css_manifest('common.css.manifest') %]
+    [% IF extra_css %]
+    <link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/styles/extra/') %][% extra_css %]" />
+    [% END %]
+    [% BLOCK layout_head %][% END %]
+    [%- INCLUDE layout_head -%]
+  </head>
+  <body>
+    <div id="header">
+      <div id="header-logo">
+        <a href="/" class="logo" title="MetaBrainz Foundation"><strong>MetaBrainz Foundation</strong></a>
+      </div>
+      <div id="header-menu">
+        <div>
+          [%- INCLUDE "layout/menu.tt" -%]
+        </div>
+      </div>
+    </div>
+
+    <div id="page" class="fullwidth">
+      [%- content -%]
+    </div>
+
+    <div id="footer">
+      <p class="links">
+        <a href="http://metabrainz.org/donate" class="internal">[% l('Donate') %]</a> |
+        <a href="http://wiki.musicbrainz.org/" class="internal">[% l('Wiki') %]</a> |
+        <a href="http://forums.musicbrainz.org/" class="internal">[% l('Forums') %]</a> |
+        <a href="http://jira.musicbrainz.org/" class="internal">[% l('Bug Tracker') %]</a> |
+        <a href="http://twitter.com/MusicBrainz" class="internal">[% l('Twitter') %]</a> |
+        <a href="http://www.cafepress.com/musicbrainz" class="internal">[% l('Schwag') %]</a>
+      </p>
+
+      <p class="sponsors">
+        [% l('Hosted by {host|Digital West}. Sponsored by: {url1|Google},
+              {url2|OSUOSL} and {more|others…}',
+              { host => 'http://digitalwest.net/',
+              url1 => 'http://www.google.com/',
+              url2 => 'http://osuosl.org/',
+              more => doc_link('MusicBrainz_Sponsors') }) %]
+      </p>
+    </div>
+  </body>
+</html>
