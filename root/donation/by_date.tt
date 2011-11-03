@@ -5,7 +5,7 @@
     <table class="tbl">
       <thead>
         <th>[% l('Date') %]</th>
-        <th>[% l('Donar') %]</th>
+        <th>[% l('Donor') %]</th>
         <th>[% l('Fee') %]</th>
         <th>[% l('Amount') %]</th>
       </thead>
