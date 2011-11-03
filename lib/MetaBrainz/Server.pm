@@ -3,6 +3,8 @@ package MetaBrainz::Server;
 use Moose;
 BEGIN { extends 'Catalyst' }
 
+use aliased 'MusicBrainz::Server::Translation';
+
 __PACKAGE__->config(
     name => 'MetaBrainz::Server',
     default_view => 'Default',
@@ -26,5 +28,8 @@ __PACKAGE__->model('MB')->inject(
     FileCache => 'MusicBrainz::Server::Data::FileCache',
     static_dir => '/home/ollie/Work/MetaBrainz/root/static'
 );
+
+sub gettext  { shift; Translation->instance->gettext(@_) }
+sub ngettext { shift; Translation->instance->ngettext(@_) }
 
 1;
