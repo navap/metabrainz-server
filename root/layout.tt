@@ -1,15 +1,9 @@
-[%- PROCESS 'lib/manifest.tt' -%]
-[%- PROCESS 'lib/i18n.tt' -%]
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>[% title %][% " - " IF title && !nosuffix %][% "MetaBrainz Foundation" IF !nosuffix %]</title>
     [% css_manifest('common.css.manifest') %]
-    [% IF extra_css %]
-    <link rel="stylesheet" type="text/css" href="[% c.uri_for('/static/styles/extra/') %][% extra_css %]" />
-    [% END %]
     [% BLOCK layout_head %][% END %]
     [%- INCLUDE layout_head -%]
   </head>

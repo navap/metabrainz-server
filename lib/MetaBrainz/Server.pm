@@ -9,6 +9,13 @@ __PACKAGE__->config(
     name => 'MetaBrainz::Server',
     default_view => 'Default',
     encoding => 'UTF-8',
+    "View::Default" => {
+        TEMPLATE_EXTENSION => '.tt',
+        PRE_PROCESS => [
+            'preprocess.tt'
+        ],
+        ENCODING => 'UTF-8',
+    },
     static => {
         mime_types => {
             json => 'application/json; charset=UTF-8',

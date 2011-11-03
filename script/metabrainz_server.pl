@@ -4,6 +4,16 @@ BEGIN {
     $ENV{CATALYST_SCRIPT_GEN} = 40;
 }
 
+use MusicBrainz::Server::DatabaseConnectionFactory;
+MusicBrainz::Server::DatabaseConnectionFactory->register_databases(
+    # How to connect when we need read-write access to the database
+    METABRAINZ => {
+        database    => "metabrainz",
+        schema      => "public",
+        username    => "musicbrainz",
+    }
+);
+
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('MetaBrainz::Server', 'Server');
 

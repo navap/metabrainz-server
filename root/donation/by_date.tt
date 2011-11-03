@@ -1,0 +1,33 @@
+[% WRAPPER 'layout.tt' %]
+  <h1>[% l('Donations By Date') %]</h1>
+
+  [% WRAPPER 'lib/pagination/paged-content.tt' %]
+    <table class="tbl">
+      <thead>
+        <th>[% l('Date') %]</th>
+        <th>[% l('Donar') %]</th>
+        <th>[% l('Fee') %]</th>
+        <th>[% l('Amount') %]</th>
+      </thead>
+      <tbody>
+      [% FOR donation=donations %]
+        <tr class="[% loop.index % 2 == 0 ? 'ev' : 'odd' %]">
+          <td>[% donation.date %]</td>
+          <td>
+            <dl>
+              <dt>[% donation.first_name | html %] [% donation.last_name | html %]
+                [%- IF donation.editor -%]
+                  (<a href="http://musicbrainz.org/user/[% donation.editor |url %]">[% donation.editor | html %]</a>)
+                [%- END -%]
+              </dt>
+              <dd>[% donation.memo | html %]</dd>
+            </dl>
+          </td>
+          <td>$[% donation.fee %]</td>
+          <td>$[% donation.amount %]</td>
+        </tr>
+      [% END %]
+      </tbody>
+    </table>
+  [% END %]
+[% END %]
