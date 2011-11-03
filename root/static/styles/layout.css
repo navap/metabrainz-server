@@ -652,3 +652,5 @@ p.cleanup {
     background: #FD9 !important;
     padding: 1em;
 }
+
+#header-menu li:hover ul { left: auto; }
