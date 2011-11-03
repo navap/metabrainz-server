@@ -33,4 +33,23 @@ sub get_all {
     );
 }
 
+sub get_all_by_amount {
+    my ($self, $limit, $offset) = @_;
+
+    return query_to_list_limited(
+        $self->sql, $offset, $limit,
+        sub { shift },
+        'SELECT *
+         FROM (
+             SELECT first_name, last_name, moderator AS editor, sum(amount) as amount,
+               sum(fee) as fee
+             FROM donation
+             GROUP BY first_name, last_name, moderator
+         ) s
+         ORDER BY amount DESC
+         OFFSET ?',
+        $offset
+    );
+}
+
 1;
