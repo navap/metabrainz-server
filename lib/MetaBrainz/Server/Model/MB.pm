@@ -18,7 +18,16 @@ sub _build_context {
     my $self = shift;
 
     return MusicBrainz::Server::Context->new(
-        conn => DatabaseConnectionFactory->get_connection('METABRAINZ')
+        conn => DatabaseConnectionFactory->get_connection('METABRAINZ'),
+        cache_manager => MusicBrainz::Server::CacheManager->new(
+            profiles => {
+                null => {
+                    class => 'Cache::Null',
+                    wrapped => 1,
+                },
+            },
+            default_profile => 'null',
+        )
     );
 }
 
@@ -31,7 +40,13 @@ sub BUILD {
     );
     $self->inject(
         Donation => 'MetaBrainz::Data::Donation'
-    )
+    );
+    $self->inject(
+        WikiDoc => 'MusicBrainz::Server::Data::WikiDoc'
+    );
+    $self->inject(
+        WikiDocIndex => 'MusicBrainz::Server::Data::WikiDocIndex'
+    );
 }
 
 sub inject {
@@ -52,7 +67,7 @@ sub expand_modules {
     my $self = shift;
     return
         map { "MetaBrainz::Server::Model::$_" }
-            qw( Donation FileCache );
+            qw( Donation FileCache WikiDoc WikiDocIndex );
 }
 
 1;
