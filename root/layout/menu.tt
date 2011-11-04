@@ -15,6 +15,23 @@
   </li>
   <li>
     <a href="#">Finances</a>
+    <ul>
+      <li>
+        <a href="[% c.uri_for_action('/donations/by_date') %]">
+          [% l('Donations') %]
+        </a>
+      </li>
+      <li>
+        <a href="[% c.uri_for_action('/donations/by_amount') %]">
+          [% l('Highest donors') %]
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          [% l('Historical Donations') %]
+        </a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="#">Donate</a>

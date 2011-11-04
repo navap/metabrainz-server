@@ -1,4 +1,4 @@
-package MetaBrainz::Server::Controller::Donation;
+package MetaBrainz::Server::Controller::Donations;
 BEGIN { use Moose; extends 'MusicBrainz::Server::Controller'; }
 use namespace::autoclean;
 
