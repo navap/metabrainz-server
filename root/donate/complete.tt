@@ -1,0 +1,4 @@
+[% WRAPPER 'layout.tt' title=l('Donation Complete') %]
+  <p>[% l('Thank you for making a donation to the MetaBrainz Foundation. Your
+           support is greatly appreciated!') %]</p>
+[% END %]

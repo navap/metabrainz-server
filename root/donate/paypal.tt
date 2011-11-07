@@ -1,0 +1,66 @@
+[%- WRAPPER 'layout.tt' %]
+  <p>
+    [% l('To make a PayPal donation, please verify the amount below. If you
+          wish to credit this donation to a particular editor (MusicBrainz user),
+          please fill in the editor name as well.') %]
+  </p>
+
+  <p>
+    [% l('The personal information provided to the MetaBrainz Foundation during
+          the donation process will not be shared with anyone. For more
+          information, please take a look at our privacy policy.') %]
+  </p>
+
+  <p>
+    [% l('If we may contact you about future MetaBrainz Foundation fundraisers,
+          please check the You may email me about future fundraising events
+          checkbox. If you prefer to keep this donation anonymous and not have
+          your name listed on the donations page, please check the I would like
+          this donation to be anonymous checkbox.') %]
+  </p>
+
+  <p><strong>
+    [% l('You must enter your editor name on MusicBrainz.org below to have
+          Picard/MusicBrainz stop nagging you') %]
+  </strong></p>
+
+  <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="business" value="metab_1320426474_biz@ocharles.org.uk" />
+    <input type="hidden" name="no_shipping" value="2" />
+    <input type="hidden" name="return" value="[% c.uri_for_action('/donate/complete') %]" />
+    <input type="hidden" name="cancel_return" value="[% c.uri_for_action('/donate/cancelled') %]" />
+    <input type="hidden" name="currency_code" value="USD" />
+    <input type="hidden" name="cmd" value="_xclick" />
+    <input type="hidden" name="item_name" value="[% l('Donation to MetaBrainz Foundation') %]" />
+
+    <p class="row">
+      <label for="amount">[% l('Amount:') %]</label>
+      <input type="text" id="amount" name="amount" value="10.00" size="10"> USD
+    </p>
+
+    <p>
+      <label for="editor">Editor name:</label>
+      <input type="text" id="editor" name="custom" size="20" />
+      (required to stop being nagged!)
+    </p>
+
+    <p class="row indent">
+      <input type="checkbox" id="on0" name="on0" value="yes" />
+      <label for="on0">[% l('You may email me about future fundraising events') %]</label>
+    </p>
+
+    <p class="row indent">
+      <input type="checkbox" id="on1" name="on1" value="yes" />
+      <label for="on0">
+        [% l('I would like this donation to be anonymous (don\'t
+              list my name on the finances page') %]
+      </label>
+    </p>
+
+    <p class="row indent">
+      <input type="image" src="[% c.uri_for('/static/images/paypal.gif') %]"
+             style="border: 0" name="submit" alt="[% l('Donate with PayPal') %]"
+             title="[% l('Donate!') %]" />
+    </p>
+  </form>
+[% END %]
