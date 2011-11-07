@@ -1,0 +1,3 @@
+[%- MACRO doc_link(to) BLOCK;
+      c.uri_for('/doc', to);
+    END -%]

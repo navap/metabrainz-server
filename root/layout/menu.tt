@@ -1,20 +1,22 @@
+[%- PROCESS 'lib/wiki_docs.tt' -%]
+
 <ul>
   <li>
     <a href="#">About</a>
     <ul>
-      <li><a href="#">Data Licenses</a></li>
-      <li><a href="#">Customers</a></li>
-      <li><a href="#">Annual Report</a></li>
-      <li><a href="#">Supporters</a></li>
-      <li><a href="#">Privacy policy</a></li>
-      <li><a href="#">White papers</a></li>
+      <li>[% l('{link|Data licenses}', { link => doc_link('Data_Licenses') }) %]</li>
+      <li>[% l('{link|Customers}', { link => doc_link('Customers') }) %]</li>
+      <li>[% l('{link|Annual report}', { link => doc_link('Annual_Report') }) %]</li>
+      <li>[% l('{link|Supporters}', { link => doc_link('Supporters') }) %]</li>
+      <li>[% l('{link|Privacy policy}', { link => doc_link('Privacy_Policy') }) %]</li>
+      <li>[% l('{link|White papers}', { link => doc_link('White_Papers') }) %]</li>
     </ul>
   </li>
   <li>
-    <a href="#">News</a>
+    <a href="http://blog.musicbrainz.org/?cat=8">News</a>
   </li>
   <li>
-    <a href="#">Finances</a>
+    [% l('{link|Finances}', { link => doc_link('Finances') }) %]
     <ul>
       <li>
         <a href="[% c.uri_for_action('/donations/by_date') %]">
@@ -27,16 +29,21 @@
         </a>
       </li>
       <li>
-        <a href="#">
-          [% l('Historical Donations') %]
-        </a>
+        [% l('{link|Historical donations}', { link => doc_link('Historical_Donations') }) %]
       </li>
     </ul>
   </li>
   <li>
     <a href="#">Donate</a>
+    <ul>
+      <li>
+        <a href="[% c.uri_for_action('/donate/paypal') %]">
+          [% l('PayPal donation') %]
+        </a>
+      </li>
+    </ul>
   </li>
   <li>
-    <a href="#">Contact</a>
+    [% l('{link|Contact}', { link => doc_link('Contact') }) %]
   </li>
 </ul>
