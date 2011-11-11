@@ -27,7 +27,8 @@ sub _build_context {
                 },
             },
             default_profile => 'null',
-        )
+        ),
+        data_prefix => 'MetaBrainz::Data'
     );
 }
 
