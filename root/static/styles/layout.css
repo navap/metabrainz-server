@@ -120,8 +120,9 @@ pre code {
 #header-logo a.logo {
     display: block;
     height: 58px;
-    width: 483px;
+    width: 800pt;
     position: absolute;
+    letter-spacing: -3pt;
 }
 
 #header-logo a.logo strong {
