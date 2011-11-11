@@ -1,2 +1,3 @@
 [%- PROCESS 'lib/manifest.tt' -%]
 [%- PROCESS 'lib/i18n.tt' -%]
+[%- PROCESS 'lib/forms.tt' -%]

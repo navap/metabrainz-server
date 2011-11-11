@@ -15,6 +15,7 @@ __PACKAGE__->config(
             'preprocess.tt'
         ],
         ENCODING => 'UTF-8',
+        PLUGIN_BASE => 'MusicBrainz::Server::Plugin',
     },
     static => {
         mime_types => {
