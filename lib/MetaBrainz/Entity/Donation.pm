@@ -4,10 +4,10 @@ use namespace::autoclean;
 
 use MooseX::Types::Moose qw( Num Str );
 
-use MusicBrainz::Server::Types;
+use MetaBrainz::Types qw( DateTime );
 
 has date => (
-    isa => 'DateTime',
+    isa => DateTime,
     is => 'rw',
     coerce => 1
 );

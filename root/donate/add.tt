@@ -1,0 +1,109 @@
+[% WRAPPER 'layout.tt' %]
+  <h1>[% l('Enter Donation') %]</h1>
+
+  <p>[% l('To enter a donation manually, fill out the fields below:') %]</p>
+
+  <form action="[% c.req.uri %]" method="post">
+    [% IF form.has_errors %]
+    <p style="font-weight: bold">
+      [% l('It seems that your form submission has some errors. Please double
+            check the information below and try again.') %]
+    </p>
+    [% END %]
+
+    <p class="row">
+      <label for="[% form.field('name.first').id %]">[% l('First name:') %]</label>
+      <input id="[% form.field('name.first').id %]" name="[% form.field('name.first').html_name %]"
+             value="[% form.field('name.first').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('name.last').id %]">[% l('Last name:') %]</label>
+      <input id="[% form.field('name.last').id %]" name="[% form.field('name.last').html_name %]"
+             value="[% form.field('name.last').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('email').id %]">[% l('Email:') %]</label>
+      <input id="[% form.field('email').id %]" name="[% form.field('email').html_name %]"
+             value="[% form.field('email').value %]" />
+    </p>
+
+    <p class="row indent">
+      <input id="[% form.field('can_contact').id %]" name="[% form.field('can_contact').html_name %]"
+             type="checkbox" />
+      <label for="[% form.field('can_contact').id %]">[% l('This donor may be contacted') %]</label>
+    </p>
+
+    <p class="row indent">
+      <input id="[% form.field('is_anonymous').id %]" name="[% form.field('is_anonymous').html_name %]"
+             type="checkbox" />
+      <label for="[% form.field('is_anonymous').id %]">[% l('This donor wishes to remain anonymous') %]</label>
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('address.street').id %]">[% l('Street:') %]</label>
+      <input id="[% form.field('address.street').id %]" name="[% form.field('address.street').html_name %]"
+             value="[% form.field('address.street').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('address.city').id %]">[% l('City:') %]</label>
+      <input id="[% form.field('address.city').id %]" name="[% form.field('address.city').html_name %]"
+             value="[% form.field('address.city').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('address.state').id %]">[% l('State:') %]</label>
+      <input id="[% form.field('address.state').id %]" name="[% form.field('address.state').html_name %]"
+             value="[% form.field('address.state').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('address.postcode').id %]">[% l('Zip/Post Code:') %]</label>
+      <input id="[% form.field('address.postcode').id %]" name="[% form.field('address.postcode').html_name %]"
+             value="[% form.field('address.postcode').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('address.country').id %]">[% l('Country:') %]</label>
+      <input id="[% form.field('address.country').id %]" name="[% form.field('address.country').html_name %]"
+             value="[% form.field('address.country').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('payment_date').id %]">[% l('Payment Date:') %]</label>
+      <input id="[% form.field('payment_date').id %]" name="[% form.field('payment_date').html_name %]"
+             value="[% form.field('payment_date').value %]" />
+      (use the format <code>MM-DD-YYYY</code> or leave blank to use the current date)
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('net_amount').id %]">[% l('Net donation:') %]</label>
+      <input id="[% form.field('net_amount').id %]" name="[% form.field('net_amount').html_name %]"
+             value="[% form.field('net_amount').value %]" /> USD
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('fee').id %]">[% l('Fee:') %]</label>
+      <input id="[% form.field('fee').id %]" name="[% form.field('fee').html_name %]"
+             value="[% form.field('fee').value %]" /> USD
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('editor_name').id %]">[% l('Editor:') %]</label>
+      <input id="[% form.field('editor_name').id %]" name="[% form.field('editor_name').html_name %]"
+             value="[% form.field('editor_name').value %]" />
+    </p>
+
+    <p class="row">
+      <label for="[% form.field('memo').id %]">[% l('Memo:') %]</label>
+      <textarea id="[% form.field('memo').id %]" name="[% form.field('memo').html_name %]"
+                rows="5" cols="80">[% form.field('memo').value %]</textarea>
+    </p>
+
+    <p class="row indent">
+      <input type="submit" value="[% l('Add Donation') %]" />
+    </p>
+  </form>
+[% END %]

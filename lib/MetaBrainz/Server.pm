@@ -39,4 +39,20 @@ __PACKAGE__->model('MB')->inject(
 sub gettext  { shift; Translation->instance->gettext(@_) }
 sub ngettext { shift; Translation->instance->ngettext(@_) }
 
+sub form
+{
+    my ($c, $stash, $form_name, %args) = @_;
+    die '$c->form required $stash => $form_name as arguments' unless $stash && $form_name;
+    $form_name = "MetaBrainz::Server::Form::$form_name";
+    Class::MOP::load_class($form_name);
+    my $form = $form_name->new(%args, ctx => $c);
+    $c->stash( $stash => $form );
+    return $form;
+}
+
+sub form_posted {
+    my $c = shift;
+    return $c->req->method eq 'POST';
+}
+
 1;

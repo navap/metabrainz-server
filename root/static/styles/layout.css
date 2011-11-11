@@ -654,3 +654,18 @@ p.cleanup {
 }
 
 #header-menu li:hover ul { left: auto; }
+
+form p.row {
+    clear: left;
+}
+form p.row label {
+    float: left;
+    width: 100pt;
+}
+form p.indent label {
+    float: none;
+    width: auto;
+}
+form p.indent {
+    margin-left: 100pt;
+}

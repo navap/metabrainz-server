@@ -2,6 +2,7 @@ package MetaBrainz::Data::Donation;
 use Moose;
 use namespace::autoclean;
 
+use DateTime::Format::Pg;
 use MetaBrainz::TextWrapper;
 use MusicBrainz::Server::Data::Utils qw( query_to_list_limited );
 use PDF::API2;
@@ -22,6 +23,35 @@ sub _column_mapping {
         memo => 'memo',
         date => 'payment_date'
     }
+}
+
+sub manually_add {
+    my ($self, $donation) = @_;
+    $self->sql->begin;
+    my $pg_date_formatter = DateTime::Format::Pg->new;
+    $self->sql->insert_row(
+        'donation',
+        {
+            first_name       => $donation->{name}{first},
+            last_name        => $donation->{name}{last},
+            email            => $donation->{email},
+            moderator        => $donation->{editor_name},
+            contact          => $donation->{can_contact},
+            anon             => $donation->{is_anonymous},
+            address_street   => $donation->{address}{street},
+            address_city     => $donation->{address}{city},
+            address_state    => $donation->{address}{state},
+            address_postcode => $donation->{address}{postcode},
+            address_country  => $donation->{address}{country},
+            payment_date     => $donation->{payment_date}
+                ? $pg_date_formatter->format_datetime($donation->{payment_date})
+                : \'now()',
+            amount           => $donation->{net_amount},
+            fee              => $donation->{fee},
+            memo             => $donation->{memo}
+        }
+    );
+    $self->sql->commit;
 }
 
 sub get_all {
