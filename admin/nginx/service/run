@@ -1,0 +1,15 @@
+#!/bin/bash
+echo starting
+exec 2>&1
+set -e
+cd MetaBrainz
+umask 022
+exec \
+	setuidgid metabrainz perl -I/home/metabrainz/perl5/lib/perl5 \
+                              -I/home/metabrainz/mb_server/lib \
+            ./script/musicbrainz_fastcgi.pl \
+ 		-listen 127.0.0.1:55901 \
+ 		-nproc 5 \
+ 		-p fcgi.pid \
+		-keeperr
+
