@@ -1,0 +1,347 @@
+#!/bin/env perl
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use DBDefs;
+use Encode qw( encode );
+use Getopt::Long;
+use MetaBrainz::Context;
+use Sql;
+use integer;
+
+################################################################################
+
+my @tables = qw(
+    donation
+    donation_historical
+);
+
+my @group_core = qw(
+    donation
+    donation_historical
+);
+
+my @groups = (
+    \@group_core,
+);
+
+################################################################################
+
+my $fHelp;
+my $OutputDir = ".";
+my $dir = "/tmp";
+my $fCompress = 1;
+my $fKeepFiles = 0;
+my $fProgress = -t STDOUT;
+my $fDoFullExport = 1;
+my $fDoReplication = 0;
+my $fCheckCompleteness = 0;
+my @tablelist;
+
+GetOptions(
+    "output-dir|d=s"    => \$OutputDir,
+    "tmp-dir|t=s"               => \$dir,
+    "compress|c!"               => \$fCompress,
+    "keep-files|k!"             => \$fKeepFiles,
+    "table=s"                   => \@tablelist,
+    "with-replication"          => sub { $fDoReplication = 1 },
+    "without-replication"       => sub { $fDoReplication = 0 },
+    "with-full-export"          => sub { $fDoFullExport = 1 },
+    "without-full-export"       => sub { $fDoFullExport = 0 },
+    "check-completeness"        => sub { $fCheckCompleteness = 1 },
+    "help"                              => \$fHelp,
+);
+
+sub usage
+{
+    print <<EOF;
+Usage: ExportAllTables [options]
+
+        --help            show this help
+    -d, --output-dir DIR  place the final archive files in DIR (default: ".")
+    -t, --tmp-dir DIR     use DIR for temporary storage (default: /tmp)
+    -c, --[no]compress    [don't] create .tar.bz2 archives after exporting
+    -k, --keep-files      don't delete the exported files from the tmp directory
+        --table TABLE     process only these tables
+        --with[out]-replication  Do [not] produce a replication packet
+        --with[out]-full-export  Do [not] export full tables
+        --check-completeness     Check that all tables from DB schema are exported
+
+Certain combinations of options are pointless:
+ * specifying --without-replication and --without-full-export
+ * specifying tables (via --table) and --without-full-export
+ * specifying --nocompress and omitting --keep-files
+
+If you specify --table TABLE, you won't get a complete consistent snapshot
+of the database, of course.
+
+EOF
+}
+
+usage(), exit if $fHelp;
+usage(), exit 1 if @ARGV;
+usage(), exit 1 if not $fCompress and not $fKeepFiles;
+usage(), exit 1 if not $fDoFullExport and not $fDoReplication;
+usage(), exit 1 if not $fDoFullExport and @tablelist;
+check_tables_completeness(), exit if $fCheckCompleteness;
+
+my $erase_tmpdir_on_exit = 0;
+END
+{
+    if ($erase_tmpdir_on_exit and not $fKeepFiles and defined($dir) and -d $dir and -d "$dir/metabrainz-dump")
+    {
+        print localtime() . " : Disk space just before erasing tmp dir:\n";
+        system "/bin/df -m";
+        print localtime() . " : Erasing $dir\n";
+        system "/bin/rm", "-rf", $dir;
+    }
+}
+
+use File::Temp qw( tempdir );
+$SIG{'INT'} = sub { exit 3 };
+$dir = tempdir("mbexport-XXXXXX", DIR => $dir, CLEANUP => 0);
+$erase_tmpdir_on_exit = 1;
+mkdir "$dir/metabrainz-dump" or die $!;
+print localtime() . " : Exporting to $dir\n";
+
+# Log in to the main DB
+my $c = MetaBrainz::Context->new;
+my $sql = Sql->new($c->dbh);
+my $dbh = $c->dbh;
+
+@tables = @tablelist if @tablelist;
+@tables = () if not $fDoFullExport;
+
+use Time::HiRes qw( gettimeofday tv_interval );
+my $t0 = [gettimeofday];
+my $totalrows = 0;
+my $tables = 0;
+
+# A quick discussion of the "Can't serialize access due to concurrent update"
+# problem.  See "transaction-iso.html" in the Postgres documentation.
+# Basically the problem is this: export "A" starts; export "B" starts; export
+# "B" updates replication_control; export "A" then can't update
+# replication_control, failing with the above error.
+# The solution is to get a lock (outside of the database) before we start the
+# serializable transaction.
+open(my $lockfh, ">>/tmp/.mb-export-lock") or die $!;
+use Fcntl qw( LOCK_EX );
+flock($lockfh, LOCK_EX) or die $!;
+
+$sql->auto_commit;
+$sql->do("SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE");
+$sql->begin;
+
+my $now = $sql->select_single_value("SELECT NOW()");
+
+# Write the TIMESTAMP file
+# This used to be free text; now it's parseable.  It contains a PostgreSQL
+# TIMESTAMP WITH TIME ZONE expression.
+writefile("TIMESTAMP", "$now\n");
+
+$| = 1;
+
+printf "%-30.30s %9s %4s %9s\n",
+    "Table", "Rows", "est%", "rows/sec",
+    ;
+
+my %rowcounts;
+
+for my $table (@tables)
+{
+    dumptable($table);
+}
+
+sub table_rowcount
+{
+    my $table = shift;
+    $table =~ s/_sanitised$//;
+
+    $sql->select_single_value(
+        "SELECT reltuples FROM pg_class WHERE relname = ? LIMIT 1",
+        $table,
+    );
+}
+
+sub dumptable
+{
+    my $table = shift;
+
+    open(DUMP, ">$dir/metabrainz-dump/$table")
+        or die $!;
+
+    my $estrows = table_rowcount($table) || 1;
+
+    $sql->do("COPY $table TO stdout");
+    my $buffer;
+    my $rows = 0;
+
+    my $t1 = [gettimeofday];
+    my $interval;
+
+    my $p = sub {
+        my ($pre, $post) = @_;
+        no integer;
+        printf $pre."%-30.30s %9d %3d%% %9d".$post,
+                $table, $rows, int(100 * $rows / $estrows),
+                $rows / ($interval||1);
+    };
+
+    $p->("", "") if $fProgress;
+
+    my $longest = 0;
+
+    while ($dbh->pg_getcopydata($buffer) >= 0)
+    {
+        $longest = length($buffer) if length($buffer) > $longest;
+        print DUMP encode('utf-8', $buffer)
+                or die $!;
+
+        ++$rows;
+        unless ($rows & 0xFFF)
+        {
+                $interval = tv_interval($t1);
+                $p->("\r", "") if $fProgress;
+        }
+    }
+
+    close DUMP
+        or die $!;
+
+    $interval = tv_interval($t1);
+    $p->(($fProgress ? "\r" : ""), sprintf(" %.2f sec\n", $interval));
+    print "Longest buffer used: $longest\n" if $ENV{SHOW_BUFFER_SIZE};
+
+    ++$tables;
+    $totalrows += $rows;
+    $rowcounts{$table} = $rows;
+
+    $rows;
+}
+
+# Make sure our replication data is safe before we commit its removal from the database
+system "/bin/sync"; $? == 0 or die "sync failed (rc=$?)";
+$sql->commit;
+
+my $dumptime = tv_interval($t0);
+printf "%s : Dumped %d tables (%d rows) in %d seconds\n",
+    scalar localtime,
+    $tables, $totalrows, $dumptime;
+
+optimise_replication_tables() if $fDoReplication;
+
+# Now we have all the files; disconnect from the database.
+# This also drops the _sanitised temporary tables.
+undef $sql;
+undef $c;
+
+# We can release the lock, allowing other exports to run if they wish.
+close $lockfh;
+
+use File::Copy qw( copy );
+
+if ($fCompress and $fDoFullExport)
+{
+    copy_readme() or die $!;
+    copy("$FindBin::Bin/COPYING-PublicDomain", "$dir/COPYING") or die $!;
+    make_tar("metabrainz-dump.tar.bz2", @group_core);
+
+    copy_readme() or die $!;
+    copy("$FindBin::Bin/COPYING-CCShareAlike", "$dir/COPYING") or die $!;
+}
+
+# Tar files all created safely... we can erase the tmpdir on exit
+system "/bin/sync"; $? == 0 or die "sync failed (rc=$?)";
+$erase_tmpdir_on_exit = 1;
+
+exit;
+
+################################################################################
+
+sub make_tar
+{
+    my ($tarfile, @files) = @_;
+
+    @files = map { "metabrainz-dump/$_" } grep { defined $rowcounts{$_} } @files;
+
+    # These ones go first, so MBImport can quickly find them
+    unshift @files, qw(
+        TIMESTAMP
+        COPYING
+        README
+    );
+
+    my $t0 = [gettimeofday];
+    print localtime() . " : Creating $tarfile\n";
+    system { "/bin/tar" } "tar",
+        "-C", $dir,
+        "--bzip2",
+        "--create",
+        "--verbose",
+        "--file", "$OutputDir/$tarfile",
+        "--",
+        @files,
+        ;
+    $? == 0 or die "Tar returned $?";
+    printf "%s : Tar completed in %d seconds\n", scalar localtime, tv_interval($t0);
+}
+
+sub writefile
+{
+    my ($file, $contents) = @_;
+    open(my $fh, ">$dir/$file") or die $!;
+    print $fh $contents or die $!;
+    close $fh or die $!;
+}
+
+sub copy_readme
+{
+    my $text = <<END;
+The files in this directory are snapshots of the MusicBrainz database,
+in a format suitable for import into a PostgreSQL database. To import
+them, you need a compatible version of the MusicBrainz server software.
+END
+    writefile("README", $text);
+}
+
+sub check_tables_completeness
+{
+    my @create_tables;
+
+    open FILE, "<$FindBin::Bin/../admin/sql/CreateTables.sql";
+    my $create_tables_sql = do { local $/; <FILE> };
+    close FILE;
+    while ($create_tables_sql =~ m/CREATE TABLE\s+([a-z0-9_]+)\s+\(\s*(.*?)\s*\);/gsi) {
+        push @create_tables, $1;
+    }
+
+    open FILE, "<$FindBin::Bin/../admin/sql/vertical/rawdata/CreateTables.sql";
+    my $create_raw_tables_sql = do { local $/; <FILE> };
+    close FILE;
+    while ($create_raw_tables_sql =~ m/CREATE TABLE\s+([a-z0-9_]+)\s+\(\s*(.*?)\s*\);/gsi) {
+        push @create_tables, $1;
+    }
+
+    my %exported_tables = map { $_ => 1 } @tables;
+    my @not_exported_tables = grep { not exists $exported_tables{$_} } @create_tables;
+    printf "Table not exported: %s\n", $_
+        for sort @not_exported_tables;
+
+    my @no_group_tables;
+    foreach my $table (@tables) {
+        my $included = 0;
+        foreach my $group (@groups) {
+            if (grep {$_ eq $table} @$group) {
+                $included = 1;
+            }
+        }
+        push @no_group_tables, $table if not $included;
+    }
+    printf "Table exported but not included in any tar: %s\n", $_
+        for sort @no_group_tables;
+}
+
+# eof ExportAllTables
