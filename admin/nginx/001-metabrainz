@@ -3,7 +3,7 @@ server {
 	include site-name.conf;
 
 	location /static/ {
-		root	/home/metabrainz/MetaBrainz/root;
+		root	/home/metabrainz/metabrainz-server/root;
 		expires	24h;
 		gzip  on;
 		gzip_http_version 1.0;
@@ -16,7 +16,7 @@ server {
 	}
 
 	location ~* ^/static/.*\.js$ {
-		root	/home/metabrainz/MetaBrainz/root;
+		root	/home/metabrainz/metabrainz-server/root;
 		expires	max;
 		gzip  on;
 		gzip_http_version 1.0;
@@ -64,5 +64,5 @@ server {
 		fastcgi_param  SERVER_NAME        $server_name;
 	}
 
-	include /etc/nginx/metabrainz-rewrites.conf;
+	include metabrainz-rewrites.conf;
 }
