@@ -15,4 +15,35 @@ MusicBrainz::Server::DatabaseConnectionFactory->register_databases(
 
 sub DB_READ_ONLY { 0 }
 
+sub MB_LANGUAGES {qw()}
+
+sub MINIFY_SCRIPTS {
+    use Javascript::Closure qw( minify :CONSTANTS );
+    return sub {
+        my %args = @_;
+        warn minify(%args, output_info => ERRORS);
+        minify(%args);
+    }
+}
+
+sub MINIFY_STYLES { use CSS::Minifier; return \&CSS::Minifier::minify }
+
+# The server root, i.e. the parent directory of admin, bin, lib, root, etc.
+sub MB_SERVER_ROOT    { "/home/metabrainz/metabrainz-server/" }
+# The data import directory (used by some reports)
+sub DATA_IMPORT_DIR    { "/home/metabrainz/data-import" }
+# Where static files are located
+sub STATIC_FILES_DIR { MB_SERVER_ROOT . '/root/static' }
+sub STATIC_PREFIX    { '/static' }
+
+sub WIKITRANS_SERVER     { "wiki.musicbrainz.org" }
+sub WIKITRANS_INDEX_FILE { MB_SERVER_ROOT() . "/root/static/wikidocs/index.txt" }
+sub WIKITRANS_INDEX_URL  { "http://musicbrainz.org/static/wikidocs/index.txt" }
+
+sub WEB_SERVER         { "www.metabrainz.example.com" }
+
+use MusicBrainz::Server::Replication ':replication_type';
+sub REPLICATION_TYPE { RT_STANDALONE }
+
+
 1;
