@@ -3,6 +3,9 @@ use Moose;
 use namespace::autoclean;
 
 use DateTime::Format::Pg;
+use DBDefs;
+use HTTP::Request::Common;
+use LWP::UserAgent;
 use MetaBrainz::TextWrapper;
 use MusicBrainz::Server::Data::Utils qw( query_to_list_limited );
 use PDF::API2;
@@ -10,12 +13,29 @@ use PDF::API2;
 with 'MusicBrainz::Server::Data::Role::Sql',
      'MusicBrainz::Server::Data::Role::NewFromRow';
 
+has lwp => (
+    is => 'ro',
+    default => sub {
+        my $ua = LWP::UserAgent->new;
+        $ua->env_proxy(1);
+        return $ua;
+    }
+);
+
 sub _entity_class { 'MetaBrainz::Entity::Donation' }
 
 sub get_by_id {
     my ($self, $id) = @_;
     my $row = $self->sql->select_single_row_hash(
         'SELECT * FROM donation WHERE id = ?', $id
+    );
+    return $row && $self->_new_from_row($row);
+}
+
+sub get_by_transaction_id {
+    my ($self, $id) = @_;
+    my $row = $self->sql->select_single_row_hash(
+        'SELECT * FROM donation WHERE paypal_trans_id = ?', $id
     );
     return $row && $self->_new_from_row($row);
 }
@@ -96,6 +116,98 @@ sub get_all_by_amount {
          OFFSET ?',
         $offset
     );
+}
+
+sub verify_paypal_transaction {
+    my ($self, $query) = @_;
+    $query .= '&cmd=_notify-validate';
+
+    my $verification_request = HTTP::Request->new('POST','http://www.paypal.com/cgi-bin/webscr');
+    $verification_request->content_type('application/x-www-form-urlencoded');
+    $verification_request->content($query);
+
+    my $verification_response = $self->lwp->request($verification_request);
+
+    if ($verification_response->is_success) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+sub try_log_donation {
+    my ($self, $params) = @_;
+
+    # check that $txn_id has not been previously processed
+    if ($self->get_by_transaction_id($params->{txn_id})) {
+        LogTransaction("transaction id used before");
+    }
+
+    # check that $receiver_email is your Primary PayPal email
+    elsif ($params->{receiver_email} ne DBDefs::PAYPAL_PRIMARY_EMAIL)
+    {
+        LogTransaction("not primary email");
+    }
+
+    elsif ($params->{payer_email} =~ /^yewm200/ || $params->{payer_email} eq 'gypsy313309496@aol.com')
+    {
+        LogTransaction("blocked donor");
+    }
+
+    elsif ($params->{payment_gross} < 0.00)
+    {
+        LogTransaction("Tiny donation");
+    }
+
+    elsif ($params->{'payment_status'} eq 'Completed' &&
+           lc($params->{business}) ne DBDefs::PAYPAL_BUSINESS)
+    {
+        $self->sql->begin;
+        $self->sql->insert_row('donation', {
+            first_name       => $params->{first_name},
+            last_name        => $params->{last_name},
+            email            => $params->{payer_email},
+            moderator        => $params->{custom},
+            contact          => lc($params->{option_name1}) eq 'yes' ? 'y' : 'n',
+            anon             => lc($params->{option_name2}) eq 'yes' ? 'y' : 'n',
+            address_street   => $params->{address_street},
+            address_city     => $params->{address_city},
+            address_state    => $params->{address_state},
+            address_postcode => $params->{address_zip},
+            address_country  => $params->{address_country},
+            paypal_trans_id  => $params->{txn_id},
+            amount           => $params->{mc_gross} - $params->{mc_fee},
+            fee              => $params->{mc_fee}
+        });
+
+        $self->c->model('Receipt')->mail_donation_receipt(
+            $self->get_by_transaction_id($params->{txn_id})
+        );
+        $self->sql->commit;
+
+        LogTransaction("payment received");
+    }
+
+    elsif ($params->{'payment_status'} eq 'Pending')
+    {
+        LogTransaction("payment pending");
+    }
+
+    elsif (lc($params->{'business'}) eq DBDefs::PAYPAL_BUSINESS)
+    {
+        LogTransaction("non donation received");
+    }
+
+    else
+    {
+        LogTransaction("Other status (no error)");
+    }
+}
+
+sub LogTransaction {
+    my ($message) = @_;
+    warn $message;
 }
 
 1;
