@@ -26,11 +26,18 @@ __PACKAGE__->config(
     }
 );
 
-__PACKAGE__->setup(qw(
+my @args = qw(
     Static::Simple
     StackTrace
     Unicode::Encoding
-));
+);
+
+if (&DBDefs::CATALYST_DEBUG) {
+    push @args, "-Debug";
+}
+
+__PACKAGE__->setup(@args);
+
 
 __PACKAGE__->model('MB')->inject(
     FileCache => 'MusicBrainz::Server::Data::FileCache',

@@ -45,5 +45,6 @@ sub WEB_SERVER         { "www.metabrainz.example.com" }
 use MusicBrainz::Server::Replication ':replication_type';
 sub REPLICATION_TYPE { RT_STANDALONE }
 
+sub CATALYST_DEBUG { 1 }
 
 1;
