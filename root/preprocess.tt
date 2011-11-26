@@ -1,3 +1,5 @@
 [%- PROCESS 'lib/manifest.tt' -%]
 [%- PROCESS 'lib/i18n.tt' -%]
 [%- PROCESS 'lib/forms.tt' -%]
+[%- MACRO doc_link(to) BLOCK; c.uri_for('/doc', to); END -%]
+[%- MACRO replace(text, search, replace) BLOCK; text | replace(search, replace); END -%]
