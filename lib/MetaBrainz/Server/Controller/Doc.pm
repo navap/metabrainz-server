@@ -1,6 +1,5 @@
 package MetaBrainz::Server::Controller::Doc;
-use Moose;
-BEGIN { extends 'MetaBrainz::Server::Controller'; }
+BEGIN { use Moose; extends 'MusicBrainz::Server::Controller'; }
 use namespace::autoclean;
 
 sub show : Path('')
