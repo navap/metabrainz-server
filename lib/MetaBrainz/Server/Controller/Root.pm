@@ -6,6 +6,8 @@ __PACKAGE__->config( namespace => '' );
 
 sub index : Path Args(0) {
     my ($self, $c) = @_;
+
+    $c->detach('/doc/show', [ 'Home' ]);
 }
 
 sub default : Path

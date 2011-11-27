@@ -7,6 +7,9 @@ sub show : Path('')
 {
     my ($self, $c, @args) = @_;
 
+    # Only show Home doc via root
+    $c->detach('/error_404') if $c->req->path eq 'doc/Home';
+
     my $id = join '/', @args;
     $id =~ s/ /_/g;
     $id = 'MetaBrainz:' . $id;
@@ -27,6 +30,14 @@ sub show : Path('')
     if ($page && $version) {
         my $bare = $c->req->param('bare') || 0;
         $page->{title} =~ s,MetaBrainz:,,;
+
+        $page->{h1} = $page->{title};
+
+        # Change a few things for the home page
+        if ($id eq 'MetaBrainz:Home') {
+            $page->{h1} = "Welcome to MetaBrainz!";
+            $page->{title} = "";
+        }
 
         $c->stash(
             id => $id,
