@@ -26,11 +26,8 @@
     <div id="footer">
       <p class="links">
         <a href="http://metabrainz.org/donate" class="internal">[% l('Donate') %]</a> |
-        <a href="http://wiki.musicbrainz.org/" class="internal">[% l('Wiki') %]</a> |
-        <a href="http://forums.musicbrainz.org/" class="internal">[% l('Forums') %]</a> |
-        <a href="http://jira.musicbrainz.org/" class="internal">[% l('Bug Tracker') %]</a> |
-        <a href="http://twitter.com/MusicBrainz" class="internal">[% l('Twitter') %]</a> |
-        <a href="http://www.cafepress.com/musicbrainz" class="internal">[% l('Schwag') %]</a>
+        <a href="http://www.cafepress.com/musicbrainz" class="internal">[% l('MusicBrainz Schwag') %]</a> |
+        <a href="http://twitter.com/MetaBrainz" class="internal">[% l('Twitter') %]</a>
       </p>
 
       <p class="sponsors">
@@ -39,7 +36,7 @@
               { host => 'http://digitalwest.net/',
               url1 => 'http://www.google.com/',
               url2 => 'http://osuosl.org/',
-              more => doc_link('MusicBrainz_Sponsors') }) %]
+              more => doc_link('Sponsors') }) %]
       </p>
     </div>
   </body>

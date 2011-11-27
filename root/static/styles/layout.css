@@ -161,6 +161,10 @@ pre code {
     list-style-image: none;
 }
 
+#header-menu ul.r {
+    float: right;
+}
+
 #header-menu li {
     float: left;
     list-style-type: none;
