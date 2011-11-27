@@ -23,19 +23,20 @@ sub show : Path('')
         return;
     }
 
-    if (!$page) {
+    # Only show pages that are in the transclusion table
+    if ($page && $version) {
+        my $bare = $c->req->param('bare') || 0;
+        $page->{title} =~ s,MetaBrainz:,,;
+
+        $c->stash(
+            id => $id,
+            page => $page,
+        );
+        $c->stash->{template} = $bare ? 'doc/bare.tt' : 'doc/page.tt';
+    }
+    else {
         $c->detach('/error_404');
     }
-
-    my $bare = $c->req->param('bare') || 0;
-
-    $page->{title} =~ s,MetaBrainz:,,;
-    $c->stash(
-        id => $id,
-        page => $page,
-    );
-
-    $c->stash->{template} = $bare ? 'doc/bare.tt' : 'doc/page.tt';
 }
 
 1;
