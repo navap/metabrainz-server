@@ -1,5 +1,5 @@
-[%- WRAPPER 'layout.tt' title=l('Donate') %]
-<h1>[% l('Make a Donation') %]</h1>
+[%- WRAPPER 'layout.tt' title=l('Make a Donation with PayPal') %]
+<h1>[% l('Make a Donation with PayPal') %]</h1>
   <p>
     [% l('To make a PayPal donation, please verify the amount below. If you
           wish to credit this donation to a particular MusicBrainz user,
@@ -13,13 +13,6 @@
           { doc => doc_link('Privacy_Policy') }) %]
   </p>
 
-  <p>
-    [% l('If we may contact you about future MetaBrainz Foundation fundraisers,
-          please check the You may email me about future fundraising events
-          checkbox. If you prefer to keep this donation anonymous and not have
-          your name listed on the donations page, please check the I would like
-          this donation to be anonymous checkbox.') %]
-  </p>
 
   <p><strong>
     [% l('You must enter your MusicBrainz user name below to have
@@ -37,25 +30,28 @@
 
     <div class="row">
       <label for="amount">[% l('Amount:') %]</label>
-      <input type="text" id="amount" name="amount" value="10.00" size="10"> USD
+      <input type="text" id="amount" name="amount" value="[% amount %]" size="10"> USD
+      [% IF recur %]<strong>[% l('per month') %]</strong>[% END %]
     </div>
 
     <div class="row">
       <label for="editor">User name:</label>
       <input type="text" id="editor" name="custom" size="20" />
-      (required to stop being nagged!)
+      [% l('(required to stop being nagged)') %]
     </div>
 
     <div class="row no-label">
       <input type="checkbox" id="on0" name="on0" value="yes" />
-      <label class="inline" for="on0">[% l('You may email me about future fundraising events') %]</label>
+      <label class="inline" for="on0">
+        [% l('You may email me about future fundraising events (this will be very seldom)') %]
+      </label>
     </div>
 
     <div class="row no-label">
       <input type="checkbox" id="on1" name="on1" value="yes" />
       <label class="inline" for="on1">
         [% l('I would like this donation to be anonymous (don\'t
-              list my name on the finances page') %]
+              list my name on the finances page)') %]
       </label>
     </div>
 

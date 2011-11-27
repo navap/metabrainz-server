@@ -36,7 +36,7 @@
               { host => 'http://digitalwest.net/',
               url1 => 'http://www.google.com/',
               url2 => 'http://osuosl.org/',
-              more => doc_link('Sponsors') }) %]
+              more => doc_link('Supporters') }) %]
       </p>
     </div>
   </body>

@@ -36,14 +36,7 @@
     </ul>
   </li>
   <li>
-    <a href="#">Donate</a>
-    <ul>
-      <li>
-        <a href="[% c.uri_for_action('/donate/paypal') %]">
-          [% l('PayPal Donation') %]
-        </a>
-      </li>
-    </ul>
+    <a href="[% c.uri_for_action('/donate/index') %]">Donate</a>
   </li>
   <li>
     [% l('{link|Contact}', { link => doc_link('Contact') }) %]
