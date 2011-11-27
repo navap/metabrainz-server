@@ -1,5 +1,6 @@
 package MetaBrainz::Server::Controller::Doc;
-BEGIN { use Moose; extends 'MusicBrainz::Server::Controller'; }
+use Moose;
+BEGIN { extends 'MetaBrainz::Server::Controller'; }
 use namespace::autoclean;
 
 sub show : Path('')
@@ -8,6 +9,7 @@ sub show : Path('')
 
     my $id = join '/', @args;
     $id =~ s/ /_/g;
+    $id = 'MetaBrainz:' . $id;
 
     my $version = $c->model('WikiDocIndex')->get_page_version($id);
     my $page = $c->model('WikiDoc')->get_page($id, $version);
@@ -27,6 +29,7 @@ sub show : Path('')
 
     my $bare = $c->req->param('bare') || 0;
 
+    $page->{title} =~ s,MetaBrainz:,,;
     $c->stash(
         id => $id,
         page => $page,

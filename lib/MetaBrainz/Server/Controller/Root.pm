@@ -6,6 +6,7 @@ __PACKAGE__->config( namespace => '' );
 
 sub index : Path Args(0) {
     my ($self, $c) = @_;
+}
 
 sub default : Path
 {
@@ -20,6 +21,14 @@ sub error_404 : Private
     $c->response->status(404);
     $c->stash->{template} = 'main/404.tt';
 }
+
+sub begin : Private
+{
+    my ($self, $c) = @_;
+
+    $c->stash(
+        wiki_server => &DBDefs::WIKITRANS_SERVER,
+    );
 
 }
 
