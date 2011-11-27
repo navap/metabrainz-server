@@ -660,17 +660,26 @@ p.cleanup {
 
 #header-menu li:hover ul { left: auto; }
 
-form p.row {
+form div.row {
     clear: left;
+    margin: 6px 0;
 }
-form p.row label {
+
+form div.row label,
+form div.row div.label {
     float: left;
-    width: 100pt;
+    text-align: right;
+    width: 132px;
+    margin-right: 12px;
 }
-form p.indent label {
-    float: none;
-    width: auto;
+
+label.inline {
+    float: none !important;
+    width: auto !important;
 }
-form p.indent {
-    margin-left: 100pt;
+
+form div.no-label,
+form p.no-label,
+form ul.errors {
+    margin-left: 144px;
 }
