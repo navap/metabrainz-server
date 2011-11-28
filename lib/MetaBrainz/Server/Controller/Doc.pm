@@ -34,10 +34,13 @@ sub show : Path('')
 
         $page->{h1} = $page->{title};
 
-        # Change a few things for the home page
         if ($id eq $ns . 'Home') {
-            $page->{h1} = "Welcome to MetaBrainz!";
-            $page->{title} = "";
+            # Customize the title for the home page
+            $c->stash->{is_home} = 1;
+            $page->{title} = 'Welcome to MetaBrainz!';
+        } elsif (substr($id,0,-5) eq $ns . 'Annual_Report') {
+            # Customize the title for the annual reports
+            $page->{title} = 'MetaBrainz Foundation Annual Report ' . substr($id,-4);
         }
 
         $c->stash(
