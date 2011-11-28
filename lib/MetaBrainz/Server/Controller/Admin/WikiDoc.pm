@@ -11,7 +11,7 @@ sub index : Path Args(0)
 
     my @pages;
     foreach my $page (sort { lc $a cmp lc $b } keys %$index) {
-        my $info = { id => $page, version => $index->{$page} };
+        my $info = { id => $page, title => $self->_strip_namespace($c, $page), version => $index->{$page} };
         push @pages, $info;
     }
 
@@ -43,6 +43,17 @@ sub index : Path Args(0)
         pages            => \@pages,
         updates_required => $updates_required
     );
+}
+
+sub _strip_namespace : Private
+{
+    my ($self, $c, $page) = @_;
+
+    my $ns = $c->stash->{wiki_namespace};
+
+    $page =~ s,$ns,,;
+
+    return $page
 }
 
 sub create : Local Args(0) RequireAuth(wiki_transcluder)

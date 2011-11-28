@@ -30,6 +30,7 @@ sub begin : Private
 
     $c->stash(
         wiki_server => &DBDefs::WIKITRANS_SERVER,
+        wiki_namespace => &DBDefs::WIKITRANS_NAMESPACE,
     );
 
 }

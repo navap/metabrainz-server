@@ -9,9 +9,11 @@ sub show : Path('')
     # Only show Home doc via root
     $c->detach('/error_404') if $c->req->path eq 'doc/Home';
 
+    my $ns = $c->stash->{wiki_namespace};
+
     my $id = join '/', @args;
     $id =~ s/ /_/g;
-    $id = 'MetaBrainz:' . $id;
+    $id = $ns . $id;
 
     my $version = $c->model('WikiDocIndex')->get_page_version($id);
     my $page = $c->model('WikiDoc')->get_page($id, $version);
@@ -28,12 +30,12 @@ sub show : Path('')
     # Only show pages that are in the transclusion table
     if ($page && $version) {
         my $bare = $c->req->param('bare') || 0;
-        $page->{title} =~ s,MetaBrainz:,,;
+        $page->{title} =~ s,$ns,,;
 
         $page->{h1} = $page->{title};
 
         # Change a few things for the home page
-        if ($id eq 'MetaBrainz:Home') {
+        if ($id eq $ns . 'Home') {
             $page->{h1} = "Welcome to MetaBrainz!";
             $page->{title} = "";
         }
