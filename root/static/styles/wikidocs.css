@@ -71,6 +71,7 @@
     padding: 5px;
     float:right;
     max-width: 50%;
+    margin-left: 20px;
 }
 
 /* For pages that have no content between the h1 and the TOC */
