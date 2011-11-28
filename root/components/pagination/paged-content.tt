@@ -1,4 +1,4 @@
-[% INCLUDE "lib/pagination/paginator.tt" %]
+[% INCLUDE "components/pagination/paginator.tt" %]
 [% IF search || total %]
     <p class="pageselector-results">
       [%- IF total OR query=="" -%]
@@ -9,4 +9,4 @@
     </p>
 [% END %]
 [% content %]
-[% INCLUDE "lib/pagination/paginator.tt" %]
+[% INCLUDE "components/pagination/paginator.tt" %]

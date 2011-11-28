@@ -1,6 +1,6 @@
 [% WRAPPER 'layout.tt' %]
   <h1>[% l('Highest Donors') %]</h1>
-  [% WRAPPER 'lib/pagination/paged-content.tt' %]
+  [% WRAPPER 'components/pagination/paged-content.tt' %]
     <table class="tbl">
       <thead>
         <th>[% l('Donor') %]</th>

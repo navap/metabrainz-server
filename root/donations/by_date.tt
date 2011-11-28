@@ -1,7 +1,7 @@
 [% WRAPPER 'layout.tt' %]
   <h1>[% l('Donations By Date') %]</h1>
 
-  [% WRAPPER 'lib/pagination/paged-content.tt' %]
+  [% WRAPPER 'components/pagination/paged-content.tt' %]
     <table class="tbl">
       <thead>
         <th>[% l('Date') %]</th>
