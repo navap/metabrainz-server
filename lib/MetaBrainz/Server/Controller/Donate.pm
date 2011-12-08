@@ -2,13 +2,20 @@ package MetaBrainz::Server::Controller::Donate;
 BEGIN { use Moose; extends 'MusicBrainz::Server::Controller'; }
 use namespace::autoclean;
 
+use Scalar::Util qw( looks_like_number );
+
 sub paypal : Local
 {
     my ($self, $c) = @_;
 
+    my $amount  = looks_like_number($c->req->params->{amount})
+                    ? $c->req->params->{amount} : undef;
+    my $recur  = looks_like_number($c->req->params->{recur})
+                    ? $c->req->params->{recur} : undef;
+
     $c->stash(
-        amount => $c->req->params->{amount},
-        recur => $c->req->params->{recur},
+        amount => $amount,
+        recur => $recur,
     );
 }
 
