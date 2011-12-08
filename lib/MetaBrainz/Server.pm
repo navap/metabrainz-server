@@ -17,7 +17,7 @@ __PACKAGE__->config(
         },
         TEMPLATE_EXTENSION => '.tt',
         PRE_PROCESS => [
-            'components/common-macros.tt'
+            'preprocess.tt'
         ],
         ENCODING => 'UTF-8',
         PLUGIN_BASE => 'MusicBrainz::Server::Plugin',
