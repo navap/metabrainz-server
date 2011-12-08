@@ -32,20 +32,20 @@ sub show : Path('')
         my $bare = $c->req->param('bare') || 0;
         $page->{title} =~ s/$ns//;
 
-        if ($id eq $ns . 'Home') {
-            # Customize the title for the home page
-            $c->stash->{is_home} = 1;
-            $page->{title} = 'Welcome to MetaBrainz!';
-        } elsif (substr($id,0,-5) eq $ns . 'Annual_Report') {
-            # Customize the title for the annual reports
-            $page->{title} = 'MetaBrainz Foundation Annual Report ' . substr($id,-4);
-        }
-
         $c->stash(
             id => $id,
             page => $page,
         );
-        $c->stash->{template} = $bare ? 'doc/bare.tt' : 'doc/page.tt';
+
+        if ($bare) {
+            $c->stash->{template} = 'doc/bare.tt';
+        } elsif ($id eq $ns . 'Home') {
+            $c->stash->{template} = 'doc/home.tt';
+        } elsif (substr($id,0,-5) eq $ns . 'Annual_Report') {
+            $c->stash->{template} = 'doc/annual-report.tt';
+        } else {
+            $c->stash->{template} = 'doc/page.tt';
+        }
     }
     else {
         $c->detach('/error_404');
