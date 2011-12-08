@@ -51,7 +51,7 @@ sub _strip_namespace : Private
 
     my $ns = &DBDefs::WIKITRANS_NAMESPACE;
 
-    $page =~ s,$ns,,;
+    $page =~ s/$ns//;
 
     return $page
 }

@@ -30,9 +30,7 @@ sub show : Path('')
     # Only show pages that are in the transclusion table
     if ($page && $version) {
         my $bare = $c->req->param('bare') || 0;
-        $page->{title} =~ s,$ns,,;
-
-        $page->{h1} = $page->{title};
+        $page->{title} =~ s/$ns//;
 
         if ($id eq $ns . 'Home') {
             # Customize the title for the home page
