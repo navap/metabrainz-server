@@ -2,7 +2,6 @@
 [%- PROCESS 'lib/i18n.tt' -%]
 [%- PROCESS 'lib/forms.tt' -%]
 [%- MACRO doc_link(to) BLOCK; c.uri_for('/doc', to); END -%]
-[%- MACRO replace(text, search, replace) BLOCK; text | replace(search, replace); END -%]
 [%- MACRO url_escape(url) BLOCK; url | url; END -%]
 [%- MACRO html_escape(url) BLOCK; url | html; END -%]
 [%- MACRO display_url(url)
