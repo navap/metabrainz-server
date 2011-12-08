@@ -9,7 +9,7 @@ sub show : Path('')
     # Only show Home doc via root
     $c->detach('/error_404') if $c->req->path eq 'doc/Home';
 
-    my $ns = $c->stash->{wiki_namespace};
+    my $ns = &DBDefs::WIKITRANS_NAMESPACE;
 
     my $id = join '/', @args;
     $id =~ s/ /_/g;

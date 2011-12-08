@@ -11,7 +11,7 @@ sub index : Path Args(0)
 
     my @pages;
     foreach my $page (sort { lc $a cmp lc $b } keys %$index) {
-        my $info = { id => $page, title => $self->_strip_namespace($c, $page), version => $index->{$page} };
+        my $info = { id => $page, title => $self->_strip_namespace($page), version => $index->{$page} };
         push @pages, $info;
     }
 
@@ -47,9 +47,9 @@ sub index : Path Args(0)
 
 sub _strip_namespace : Private
 {
-    my ($self, $c, $page) = @_;
+    my ($self, $page) = @_;
 
-    my $ns = $c->stash->{wiki_namespace};
+    my $ns = &DBDefs::WIKITRANS_NAMESPACE;
 
     $page =~ s,$ns,,;
 
