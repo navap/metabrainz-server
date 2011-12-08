@@ -5,7 +5,7 @@ BEGIN { extends 'Catalyst' }
 
 use aliased 'MusicBrainz::Server::Translation';
 
-require MetaBrainz::Server::Filters;
+require MusicBrainz::Server::Filters;
 
 __PACKAGE__->config(
     name => 'MetaBrainz::Server',
@@ -13,7 +13,7 @@ __PACKAGE__->config(
     encoding => 'UTF-8',
     "View::Default" => {
         FILTERS => {
-            'uri_decode' => \&MetaBrainz::Server::Filters::uri_decode,
+            'uri_decode' => \&MusicBrainz::Server::Filters::uri_decode,
         },
         TEMPLATE_EXTENSION => '.tt',
         PRE_PROCESS => [
