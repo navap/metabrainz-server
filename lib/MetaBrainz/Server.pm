@@ -5,11 +5,16 @@ BEGIN { extends 'Catalyst' }
 
 use aliased 'MusicBrainz::Server::Translation';
 
+require MusicBrainz::Server::Filters;
+
 __PACKAGE__->config(
     name => 'MetaBrainz::Server',
     default_view => 'Default',
     encoding => 'UTF-8',
     "View::Default" => {
+        FILTERS => {
+            'uri_decode' => \&MusicBrainz::Server::Filters::uri_decode,
+        },
         TEMPLATE_EXTENSION => '.tt',
         PRE_PROCESS => [
             'preprocess.tt'
@@ -26,15 +31,22 @@ __PACKAGE__->config(
     }
 );
 
-__PACKAGE__->setup(qw(
+my @args = qw(
     Static::Simple
     StackTrace
     Unicode::Encoding
-));
+);
+
+if (&DBDefs::CATALYST_DEBUG) {
+    push @args, "-Debug";
+}
+
+__PACKAGE__->setup(@args);
+
 
 __PACKAGE__->model('MB')->inject(
     FileCache => 'MusicBrainz::Server::Data::FileCache',
-    static_dir => '/home/ollie/Work/MetaBrainz/root/static'
+    static_dir => '&DBDefs::STATIC_FILES_DIR'
 );
 
 sub gettext  { shift; Translation->instance->gettext(@_) }

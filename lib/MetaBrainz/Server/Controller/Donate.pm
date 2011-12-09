@@ -2,9 +2,24 @@ package MetaBrainz::Server::Controller::Donate;
 BEGIN { use Moose; extends 'MusicBrainz::Server::Controller'; }
 use namespace::autoclean;
 
+use Scalar::Util qw( looks_like_number );
 use URI;
 
-sub paypal : Local {}
+sub paypal : Local
+{
+    my ($self, $c) = @_;
+
+    my $amount  = looks_like_number($c->req->params->{amount})
+                    ? $c->req->params->{amount} : undef;
+    my $recur  = looks_like_number($c->req->params->{recur})
+                    ? $c->req->params->{recur} : undef;
+
+    $c->stash(
+        amount => $amount,
+        recur => $recur,
+    );
+}
+
 sub complete : Local { }
 sub cancelled : Local { }
 sub paypal_ipn : Path('paypal-ipn') {
@@ -26,6 +41,11 @@ sub paypal_ipn : Path('paypal-ipn') {
     $c->res->body('');
     $c->res->status(200);
     $c->detach;
+}
+
+sub index : Path Args(0)
+{
+    my ($self, $c) = @_;
 }
 
 sub add : Path('/admin/add-donation') {

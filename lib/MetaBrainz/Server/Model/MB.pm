@@ -37,7 +37,7 @@ sub BUILD {
     my ($self) = @_;
     $self->inject(
         FileCache => 'MusicBrainz::Server::Data::FileCache',
-        static_dir => '/home/ollie/Work/MetaBrainz/root/static'
+        static_dir => '&DBDefs::STATIC_FILES_DIR'
     );
     $self->inject(
         Donation => 'MetaBrainz::Data::Donation'

@@ -37,6 +37,7 @@ sub STATIC_FILES_DIR { MB_SERVER_ROOT . '/root/static' }
 sub STATIC_PREFIX    { '/static' }
 
 sub WIKITRANS_SERVER     { "wiki.musicbrainz.org" }
+sub WIKITRANS_NAMESPACE  { "MetaBrainz:" }
 sub WIKITRANS_INDEX_FILE { MB_SERVER_ROOT() . "/root/static/wikidocs/index.txt" }
 sub WIKITRANS_INDEX_URL  { "http://musicbrainz.org/static/wikidocs/index.txt" }
 
@@ -45,5 +46,6 @@ sub WEB_SERVER         { "www.metabrainz.example.com" }
 use MusicBrainz::Server::Replication ':replication_type';
 sub REPLICATION_TYPE { RT_STANDALONE }
 
+sub CATALYST_DEBUG { 1 }
 
 1;

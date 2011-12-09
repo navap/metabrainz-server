@@ -1,6 +1,9 @@
+[% title=l('MetaBrainz Foundation Annual Report {num}',
+          { num => id.substr(-4) }) %]
+
 [%- WRAPPER "layout.tt" full_width=1 title=title -%]
     <div id="content" class="wikicontent">
-        <h1>[%- page.title -%]</h1>
+        <h1>[%- title -%]</h1>
         [%- page.content -%]
 
     </div>

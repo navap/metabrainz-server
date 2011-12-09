@@ -1,4 +1,4 @@
-[% WRAPPER 'layout.tt' %]
+[% WRAPPER 'layout.tt' title=l('Donations By Date') %]
   <h1>[% l('Donations By Date') %]</h1>
 
   [% WRAPPER 'lib/pagination/paged-content.tt' %]

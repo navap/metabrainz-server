@@ -6,8 +6,14 @@ sub show : Path('')
 {
     my ($self, $c, @args) = @_;
 
+    # Only show Home doc via root
+    $c->detach('/error_404') if $c->req->path eq 'doc/Home';
+
+    my $ns = &DBDefs::WIKITRANS_NAMESPACE;
+
     my $id = join '/', @args;
     $id =~ s/ /_/g;
+    $id = $ns . $id;
 
     my $version = $c->model('WikiDocIndex')->get_page_version($id);
     my $page = $c->model('WikiDoc')->get_page($id, $version);
@@ -21,17 +27,28 @@ sub show : Path('')
         return;
     }
 
-    $c->stash(
-        id => $id,
-        page => $page,
-    );
+    # Only show pages that are in the transclusion table
+    if ($page && $version) {
+        my $bare = $c->req->param('bare') || 0;
+        $page->{title} =~ s/$ns//;
 
-    if ($page) {
-        $c->stash->{template} = $bare ? 'doc/bare.tt' : 'doc/page.tt';
+        $c->stash(
+            id => $id,
+            page => $page,
+        );
+
+        if ($bare) {
+            $c->stash->{template} = 'doc/bare.tt';
+        } elsif ($id eq $ns . 'Home') {
+            $c->stash->{template} = 'doc/home.tt';
+        } elsif (substr($id,0,-5) eq $ns . 'Annual_Report') {
+            $c->stash->{template} = 'doc/annual-report.tt';
+        } else {
+            $c->stash->{template} = 'doc/page.tt';
+        }
     }
     else {
-        $c->response->status(404);
-        $c->stash->{template} = $bare ? 'doc/bare_error.tt' : 'doc/error.tt';
+        $c->detach('/error_404');
     }
 }
 

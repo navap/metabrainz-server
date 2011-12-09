@@ -1,15 +1,16 @@
-[%- PROCESS 'lib/wiki_docs.tt' -%]
+<ul class="r">
+  <li><a href="http://musicbrainz.org">MusicBrainz</a></li>
+</ul>
 
 <ul>
   <li>
-    <a href="#">About</a>
+    [% l('{link|About}', { link => doc_link('About') }) %]
     <ul>
-      <li>[% l('{link|Data licenses}', { link => doc_link('Data_Licenses') }) %]</li>
+      <li>[% l('{link|Data Licenses}', { link => doc_link('Data_Licenses') }) %]</li>
       <li>[% l('{link|Customers}', { link => doc_link('Customers') }) %]</li>
-      <li>[% l('{link|Annual report}', { link => doc_link('Annual_Report') }) %]</li>
       <li>[% l('{link|Supporters}', { link => doc_link('Supporters') }) %]</li>
-      <li>[% l('{link|Privacy policy}', { link => doc_link('Privacy_Policy') }) %]</li>
-      <li>[% l('{link|White papers}', { link => doc_link('White_Papers') }) %]</li>
+      <li>[% l('{link|Privacy Policy}', { link => doc_link('Privacy_Policy') }) %]</li>
+      <li>[% l('{link|White Papers}', { link => doc_link('White_Papers') }) %]</li>
     </ul>
   </li>
   <li>
@@ -25,23 +26,27 @@
       </li>
       <li>
         <a href="[% c.uri_for_action('/donations/by_amount') %]">
-          [% l('Highest donors') %]
+          [% l('Highest Donors') %]
         </a>
       </li>
       <li>
-        [% l('{link|Historical donations}', { link => doc_link('Historical_Donations') }) %]
+        [% l('{link|Historical Finances}', { link => doc_link('Historical_Finances') }) %]
       </li>
     </ul>
   </li>
   <li>
-    <a href="#">Donate</a>
+    [% l('{link|Annual Report}', { link => doc_link('Annual_Report') }) %]
     <ul>
-      <li>
-        <a href="[% c.uri_for_action('/donate/paypal') %]">
-          [% l('PayPal donation') %]
-        </a>
-      </li>
+      <li>[% l('{link|Annual Report 2010}', { link => doc_link('Annual_Report/2010') }) %]</li>
+      <li>[% l('{link|Annual Report 2009}', { link => doc_link('Annual_Report/2009') }) %]</li>
+      <li>[% l('{link|Annual Report 2008}', { link => doc_link('Annual_Report/2008') }) %]</li>
+      <li>[% l('{link|Annual Report 2007}', { link => doc_link('Annual_Report/2007') }) %]</li>
+      <li>[% l('{link|Annual Report 2006}', { link => doc_link('Annual_Report/2006') }) %]</li>
     </ul>
+  </li>
+
+  <li>
+    <a href="[% c.uri_for_action('/donate/index') %]">Donate</a>
   </li>
   <li>
     [% l('{link|Contact}', { link => doc_link('Contact') }) %]
