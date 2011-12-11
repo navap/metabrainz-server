@@ -43,6 +43,9 @@ sub WIKITRANS_INDEX_URL  { "http://musicbrainz.org/static/wikidocs/index.txt" }
 
 sub WEB_SERVER         { "www.metabrainz.example.com" }
 
+sub PAYPAL_PRIMARY_EMAIL { 'donate@example.org' };
+sub PAYPAL_BUSINESS { 'MetaBrainz Foundation' };
+
 use MusicBrainz::Server::Replication ':replication_type';
 sub REPLICATION_TYPE { RT_STANDALONE }
 
