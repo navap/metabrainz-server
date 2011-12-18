@@ -44,7 +44,7 @@
     <div class="row">
       <label for="amount">[% l('Amount:') %]</label>
       <input type="text" id="amount"
-             name="[% recur ? 'a3' ? 'amount' %]"
+             name="[% recur ? 'a3' : 'amount' %]"
              value="[% amount || '10' %]" size="10"> USD
       [% IF recur %]<strong>[% l('per month') %]</strong>[% END %]
     </div>
