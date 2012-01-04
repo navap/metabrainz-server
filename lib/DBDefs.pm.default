@@ -48,4 +48,7 @@ sub REPLICATION_TYPE { RT_STANDALONE }
 
 sub CATALYST_DEBUG { 1 }
 
+sub PAYPAL_PRIMARY_EMAIL { 'paypal@metabrainz.org' }
+sub PAYPAL_BUSINESS { 'payment@metabrainz.org.uk' }
+
 1;
