@@ -10,8 +10,15 @@ sub show : Path('')
     $c->detach('/error_404') if $c->req->path eq 'doc/Home';
 
     my $ns = &DBDefs::WIKITRANS_NAMESPACE;
-
     my $id = join '/', @args;
+
+    # Catch any wiki redirects
+    # eg. Annual_Report => MetaBrainz:/Annual_Report/2010
+    if ($id =~ /^$ns/) {
+        $id =~ s/$ns//g;
+        $c->response->redirect($c->uri_for('/doc', $id), 301);
+    }
+
     $id =~ s/ /_/g;
     $id = $ns . $id;
 
