@@ -40,8 +40,10 @@ sub show : Path('')
         if ($bare) {
             $c->stash->{template} = 'doc/bare.tt';
         } elsif ($id eq $ns . 'Home') {
+            # Use custom template for home page
             $c->stash->{template} = 'doc/home.tt';
         } elsif (substr($id,0,-5) eq $ns . 'Annual_Report') {
+            # Use custom template for annual reports
             $c->stash->{template} = 'doc/annual-report.tt';
         } else {
             $c->stash->{template} = 'doc/page.tt';
