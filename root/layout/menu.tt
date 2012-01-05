@@ -4,7 +4,7 @@
 
 <ul>
   <li>
-    [% l('{link|About}', { link => '#' }) %]
+    [% l('<a>About</a>', { link => '#' }) %]
     <ul>
       <li>[% l('{link|Customers}', { link => doc_link('Customers') }) %]</li>
       <li>[% l('{link|Sponsors}', { link => doc_link('Sponsors') }) %]</li>
