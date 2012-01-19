@@ -36,6 +36,7 @@
   <li>
     [% l('{link|Annual Report}', { link => doc_link('Annual_Report') }) %]
     <ul>
+      <li>[% l('{link|Annual Report 2011}', { link => doc_link('Annual_Report/2011') }) %]</li>
       <li>[% l('{link|Annual Report 2010}', { link => doc_link('Annual_Report/2010') }) %]</li>
       <li>[% l('{link|Annual Report 2009}', { link => doc_link('Annual_Report/2009') }) %]</li>
       <li>[% l('{link|Annual Report 2008}', { link => doc_link('Annual_Report/2008') }) %]</li>
