@@ -1887,6 +1887,49 @@
          },
          "version" : "1.4"
       },
+      "Clone" : {
+         "dist" : "Clone-0.31",
+         "module" : "Clone",
+         "mymeta" : {
+            "abstract" : "unknown",
+            "author" : [
+               "unknown"
+            ],
+            "dynamic_config" : 0,
+            "generated_by" : "ExtUtils::MakeMaker version 6.30, CPAN::Meta::Converter version 2.120351",
+            "license" : [
+               "unknown"
+            ],
+            "meta-spec" : {
+               "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+               "version" : "2"
+            },
+            "name" : "Clone",
+            "prereqs" : {
+               "build" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : "0"
+                  }
+               },
+               "runtime" : {
+                  "requires" : {}
+               }
+            },
+            "release_status" : "stable",
+            "version" : "0.31",
+            "x_installdirs" : "site",
+            "x_version_from" : "Clone.pm"
+         },
+         "name" : "Clone",
+         "pathname" : "R/RD/RDF/Clone-0.31.tar.gz",
+         "provides" : {
+            "Clone" : {
+               "file" : "Clone.pm",
+               "version" : "0.31"
+            }
+         },
+         "version" : "0.31"
+      },
       "DBD::Pg" : {
          "dist" : "DBD-Pg-2.19.2",
          "module" : "DBD::Pg",
@@ -11873,6 +11916,60 @@
             }
          },
          "version" : "3.20"
+      },
+      "HTML::Tiny" : {
+         "dist" : "HTML-Tiny-1.05",
+         "module" : "HTML::Tiny",
+         "mymeta" : {
+            "abstract" : "Lightweight, dependency free HTML/XML generation",
+            "author" : [
+               "Andy Armstrong <andy@hexten.net>"
+            ],
+            "dynamic_config" : 0,
+            "generated_by" : "ExtUtils::MakeMaker version 6.48, CPAN::Meta::Converter version 2.120351",
+            "license" : [
+               "perl_5"
+            ],
+            "meta-spec" : {
+               "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+               "version" : "2"
+            },
+            "name" : "HTML-Tiny",
+            "no_index" : {
+               "directory" : [
+                  "t",
+                  "inc"
+               ]
+            },
+            "prereqs" : {
+               "build" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : "0"
+                  }
+               },
+               "configure" : {
+                  "requires" : {
+                     "ExtUtils::MakeMaker" : "0"
+                  }
+               },
+               "runtime" : {
+                  "requires" : {
+                     "Test::More" : "0"
+                  }
+               }
+            },
+            "release_status" : "stable",
+            "version" : "1.05"
+         },
+         "name" : "HTML::Tiny",
+         "pathname" : "A/AN/ANDYA/HTML-Tiny-1.05.tar.gz",
+         "provides" : {
+            "HTML::Tiny" : {
+               "file" : "HTML/Tiny.pm",
+               "version" : "1.05"
+            }
+         },
+         "version" : "1.05"
       },
       "HTML::Tree" : {
          "dist" : "HTML-Tree-4.2",

@@ -34,6 +34,7 @@ requires 'namespace::clean' => '0.23';
 # stuff was broken apart and on CPAN.
 requires 'Cache';
 requires 'Catalyst::Plugin::StackTrace' => '0.09',
+requires 'Clone';
 requires 'CSS::Minifier';
 requires 'Date::Calc' => '5.8';
 requires 'Data::Compare';
@@ -42,6 +43,7 @@ requires 'Data::UUID::MT' => '0.004';
 requires 'Digest::MD5::File' => '0.07';
 requires 'Exception::Class' => '1.29';
 requires 'HTML::TreeBuilder::XPath';
+requires 'HTML::Tiny' => '1.05';
 requires 'IO::All';
 requires 'Javascript::Closure';
 requires 'Locale::TextDomain' => '1.16';
