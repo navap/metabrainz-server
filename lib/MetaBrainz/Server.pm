@@ -22,17 +22,9 @@ __PACKAGE__->config(
         ENCODING => 'UTF-8',
         PLUGIN_BASE => 'MusicBrainz::Server::Plugin',
     },
-    static => {
-        mime_types => {
-            json => 'application/json; charset=UTF-8',
-        },
-        dirs => [ 'static' ],
-        no_logs => 1
-    }
 );
 
 my @args = qw(
-    Static::Simple
     StackTrace
     Unicode::Encoding
 );
