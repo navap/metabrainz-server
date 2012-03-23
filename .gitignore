@@ -1,1 +1,7 @@
+MYMETA.json
+MYMETA.yml
+Makefile
 lib/DBDefs.pm
+/inc
+/local
+
