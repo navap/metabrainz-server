@@ -10,8 +10,9 @@ license 'gpl';
 version_from 'lib/MetaBrainz/Server.pm';
 
 requires 'aliased' => '0.30';
+requires 'Catalyst::Runtime' => '5.90007';
 requires 'DateTime' => '0.72';
-requires 'DateTime::Format::Pg' => '1.16004';
+requires 'DateTime::Format::Pg' => '0.16004';
 requires 'DateTime::Format::Strptime' => '1.5000';
 requires 'HTML::FormHandler' => '0.36002';
 requires 'HTTP::Request::Common' => '6.00';
