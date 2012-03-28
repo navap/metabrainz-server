@@ -7,7 +7,7 @@ use aliased 'MusicBrainz::Server::DatabaseConnectionFactory';
 
 extends 'MusicBrainz::Server::Context';
 
-sub _build_conn {
+sub _build_connector {
     return DatabaseConnectionFactory->get_connection('METABRAINZ');
 }
 

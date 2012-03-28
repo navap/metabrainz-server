@@ -85,7 +85,7 @@ sub edit : Local Args(0) RequireAuth(wiki_transcluder)
 
     if ($c->form_posted && $form->process( params => $c->req->params )) {
         $c->model('WikiDocIndex')->set_page_version(
-            $form->field('page')->value,
+            $page,
             $form->field('version')->value
         );
 

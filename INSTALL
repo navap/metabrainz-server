@@ -1,0 +1,26 @@
+To install the MetaBrainz server:
+
+1. Create a `metabrainz` user on your machine. The rest of the steps will assume
+   you are this user, and you are in the user's home directory. You can do this
+   with `sudo -u metabrainz -i`. As this user:
+
+   1. First checkout metabrainz-server with
+      `git clone git://git.musicbrainz.org/metabrainz-server.git`
+
+   2. Also, you'll need to checkout musicbrainz-server with
+      `git clone git://git.musicbrainz.org/musicbrainz-server.git`
+
+   3. Create a symlink to musicbrainz-server from metabrainz-server:
+
+          cd ~/metabrainz-server
+          ln -s ~/musicbrainz-server musicbrainz-server
+
+   4. Install dependencies:
+
+          cd ~/metabrainz-server
+          carton install --deployment
+
+   5. You should now be able to start the development server:
+
+          cd ~/metabrainz-server
+          carton exec -Imusicbrainz-server/lib -Ilib -- plackup -r

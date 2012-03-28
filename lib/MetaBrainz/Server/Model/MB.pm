@@ -5,10 +5,10 @@ extends 'Catalyst::Model';
 
 use aliased 'MusicBrainz::Server::DatabaseConnectionFactory';
 
-use MusicBrainz::Server::Context;
+use MetaBrainz::Context;
 
 has 'context' => (
-    isa        => 'MusicBrainz::Server::Context',
+    isa        => 'MetaBrainz::Context',
     is         => 'rw',
     lazy_build => 1,
     handles    => [qw( cache dbh )] # XXX Hack - Model::Feeds should be in Data
@@ -17,7 +17,7 @@ has 'context' => (
 sub _build_context {
     my $self = shift;
 
-    return MusicBrainz::Server::Context->new(
+    return MetaBrainz::Context->new(
         conn => DatabaseConnectionFactory->get_connection('METABRAINZ'),
         cache_manager => MusicBrainz::Server::CacheManager->new(
             profiles => {
