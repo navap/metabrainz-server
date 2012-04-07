@@ -1,8 +1,6 @@
 [%- MACRO paypal_donation(value) BLOCK -%]
       <td align="center" width="16%">
-        <a href="[% c.uri_for_action('/donate/paypal', { amount => value }) %]">
-          <img src="[% c.uri_for('/static/images/paypal.gif') %]" />
-        </a>
+        <a href="[% c.uri_for_action('/donate/paypal', { amount => value }) %]"><img src="[% c.uri_for('/static/images/paypal.gif') %]" /></a>
         <br />
         [%= IF value==0 =%]
           $Other
@@ -14,9 +12,7 @@
 
 [%- MACRO paypal_donation_recur(value, recur) BLOCK -%]
       <td align="center" width="16%">
-        <a href="[% c.uri_for_action('/donate/paypal', { amount => value, recur => recur }) %]">
-          <img src="[% c.uri_for('/static/images/paypal.gif') %]" />
-        </a>
+        <a href="[% c.uri_for_action('/donate/paypal', { amount => value, recur => recur }) %]"><img src="[% c.uri_for('/static/images/paypal.gif') %]" /></a>
         <br />
         [%= IF value==0 =%]
           $Other/month
@@ -74,7 +70,7 @@
   <p>[% l('Where has my contribution gone? See our {doc|transparent finances}.',
   { doc => doc_link('Finances') }) %]</p>
 
-  <p>[% l('Who else is contributing? See our list of {uri|doners}.',
+  <p>[% l('Who else is contributing? See our list of {uri|donors}.',
   { uri => c.uri_for_action('/donations/by_date') }) %]</p>
 
   <h2>[% l('Donating via Direct Bank Transfer') %]</h2>
