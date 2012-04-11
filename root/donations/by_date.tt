@@ -1,13 +1,13 @@
-[% WRAPPER 'layout.tt' title=l('Donations By Date') %]
-  <h1>[% l('Donations By Date') %]</h1>
+[% WRAPPER 'layout.tt' title=l('Donations') %]
+  <h1>[% l('Donations') %]</h1>
 
   [% WRAPPER 'lib/pagination/paged-content.tt' %]
     <table class="tbl">
       <thead>
         <th>[% l('Date') %]</th>
         <th>[% l('Donor') %]</th>
+        <th>[% l('Donation') %]</th>
         <th>[% l('Fee') %]</th>
-        <th>[% l('Amount') %]</th>
       </thead>
       <tbody>
       [% FOR donation=donations %]
@@ -23,8 +23,8 @@
               <dd>[% donation.memo | html %]</dd>
             </dl>
           </td>
-          <td>$[% donation.fee %]</td>
           <td>$[% donation.amount %]</td>
+          <td>$[% donation.fee %]</td>
         </tr>
       [% END %]
       </tbody>

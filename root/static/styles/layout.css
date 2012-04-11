@@ -311,6 +311,10 @@ table.tbl tr.ev th {
 table.tbl .pos { width: 1em; white-space: nowrap; }
 table.tbl th { word-break: keep-all; white-space: nowrap; }
 
+table.tbl dl {
+    margin: 0;
+}
+
 /* Paginator */
 .pageselector a, .pageselector span {
     font-size: 90%;
