@@ -5,7 +5,7 @@ body {
     color: #000;
     font-family: 'Bitstream Vera Sans', Verdana, Arial, sans-serif;
     font-size: 12px;
-    min-width: 780px;
+    min-width: 935px;
     margin: auto;
 }
 
@@ -95,21 +95,20 @@ pre code {
 }
 
 #header-logo {
-    background: #534AD3 no-repeat top left;
+    background: #534AD3 url('/static/images/metabrainz_header_logo.png') no-repeat top left;
     height: 58px;
     color: #FFF;
 }
 
 #header-logo a.logo {
-    display: inline-block;
+    display: block;
     height: 58px;
-    letter-spacing: -3pt;
+    width: 935px;
 }
 
 #header-logo a.logo strong {
-    font-size: 58px;
-    color: #333399;
-    height: 58px;
+    position: absolute;
+    left: -10000px;
 }
 
 #header-menu {
