@@ -9,9 +9,9 @@ body {
     margin: auto;
 }
 
-a, .homepage a:visited { color:#002BBA; text-decoration: none; }
-a:visited { color:#3C5DCE; }
-a:hover, .homepage a:hover { color:#FC6714; text-decoration: underline; }
+a { color:#002BBA; text-decoration: none; }
+/* a:visited { color:#632D9B; } */
+a:hover { color:#2E9E2D; text-decoration: underline; }
 a:active, a:focus { outline-style: none; }
 
 a.icon:hover { text-decoration: none; }
@@ -48,7 +48,7 @@ fieldset legend {
     margin-top: 1em;
     margin-bottom: 0;
     font-size: 120%;
-    color: #2D9E2D;
+    color: #2E9E2D;
     font-weight: bold;
 }
 
@@ -152,7 +152,7 @@ pre code {
 #header-menu ul li:hover a,
 #header-menu ul li:hover li a:hover,
 #header-menu ul a:hover {
-    background-color: #FC6714;
+    background-color: #2E9E2D;
     color: #FFF;
 }
 
@@ -329,11 +329,13 @@ table.tbl dl {
 }
 
 .pageselector a:hover {
-    background-color: #FFBA58;
+    background-color: #534AD3;
+    color: #FFF;
 }
 
 .pageselector a.sel {
-    background-color: #FFBA58;
+    background-color: #534AD3;
+    color: #FFF;
     font-weight: bold;
 }
 
