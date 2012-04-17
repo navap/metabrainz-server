@@ -6,6 +6,22 @@
     [% css_manifest('common.css.manifest') %]
     [% BLOCK layout_head %][% END %]
     [%- INCLUDE layout_head -%]
+    <meta name="google-site-verification" content="RNuXvY-W9lT_oQAhump_R0brorZdDYv4a_UayxvHcus" />
+    [% IF google_analytics_code %]
+      <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '[% google_analytics_code %]']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+      </script>
+    [% END %]
   </head>
   <body>
     <div id="header">
@@ -25,8 +41,7 @@
 
     <div id="footer">
       <p class="left">
-        <a href="http://metabrainz.org/donate" class="internal">[% l('Donate') %]</a> |
-        <a href="http://www.cafepress.com/musicbrainz" class="internal">[% l('MusicBrainz Schwag') %]</a> |
+        <a href="[% doc_link('Privacy_Policy') %]" class="internal">[% l('Privacy Policy') %]</a> |
         <a href="http://twitter.com/MetaBrainz" class="internal">[% l('Twitter') %]</a>
       </p>
 

@@ -5,13 +5,13 @@ body {
     color: #000;
     font-family: 'Bitstream Vera Sans', Verdana, Arial, sans-serif;
     font-size: 12px;
-    min-width: 780px;
+    min-width: 935px;
     margin: auto;
 }
 
-a, .homepage a:visited { color:#002BBA; text-decoration: none; }
-a:visited { color:#3C5DCE; }
-a:hover, .homepage a:hover { color:#FC6714; text-decoration: underline; }
+a { color:#002BBA; text-decoration: none; }
+/* a:visited { color:#632D9B; } */
+a:hover { color:#2E9E2D; text-decoration: underline; }
 a:active, a:focus { outline-style: none; }
 
 a.icon:hover { text-decoration: none; }
@@ -48,7 +48,7 @@ fieldset legend {
     margin-top: 1em;
     margin-bottom: 0;
     font-size: 120%;
-    color: #2D9E2D;
+    color: #2E9E2D;
     font-weight: bold;
 }
 
@@ -95,21 +95,20 @@ pre code {
 }
 
 #header-logo {
-    background: #534AD3 no-repeat top left;
+    background: #534AD3 url('/static/images/metabrainz_header_logo.png') no-repeat top left;
     height: 58px;
     color: #FFF;
 }
 
 #header-logo a.logo {
-    display: inline-block;
+    display: block;
     height: 58px;
-    letter-spacing: -3pt;
+    width: 935px;
 }
 
 #header-logo a.logo strong {
-    font-size: 58px;
-    color: #333399;
-    height: 58px;
+    position: absolute;
+    left: -10000px;
 }
 
 #header-menu {
@@ -153,7 +152,7 @@ pre code {
 #header-menu ul li:hover a,
 #header-menu ul li:hover li a:hover,
 #header-menu ul a:hover {
-    background-color: #FC6714;
+    background-color: #2E9E2D;
     color: #FFF;
 }
 
@@ -312,6 +311,10 @@ table.tbl tr.ev th {
 table.tbl .pos { width: 1em; white-space: nowrap; }
 table.tbl th { word-break: keep-all; white-space: nowrap; }
 
+table.tbl dl {
+    margin: 0;
+}
+
 /* Paginator */
 .pageselector a, .pageselector span {
     font-size: 90%;
@@ -326,11 +329,13 @@ table.tbl th { word-break: keep-all; white-space: nowrap; }
 }
 
 .pageselector a:hover {
-    background-color: #FFBA58;
+    background-color: #534AD3;
+    color: #FFF;
 }
 
 .pageselector a.sel {
-    background-color: #FFBA58;
+    background-color: #534AD3;
+    color: #FFF;
     font-weight: bold;
 }
 
