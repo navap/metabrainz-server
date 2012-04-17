@@ -25,8 +25,7 @@
 
     <div id="footer">
       <p class="left">
-        <a href="http://metabrainz.org/donate" class="internal">[% l('Donate') %]</a> |
-        <a href="http://www.cafepress.com/musicbrainz" class="internal">[% l('MusicBrainz Schwag') %]</a> |
+        <a href="[% doc_link('Privacy_Policy') %]" class="internal">[% l('Privacy Policy') %]</a> |
         <a href="http://twitter.com/MetaBrainz" class="internal">[% l('Twitter') %]</a>
       </p>
 

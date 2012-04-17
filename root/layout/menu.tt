@@ -8,7 +8,7 @@
     <ul>
       <li>[% l('{link|Customers}', { link => doc_link('Customers') }) %]</li>
       <li>[% l('{link|Sponsors}', { link => doc_link('Sponsors') }) %]</li>
-      <li>[% l('{link|Privacy Policy}', { link => doc_link('Privacy_Policy') }) %]</li>
+      <li>[% l('{link|Press Releases}', { link => doc_link('Press_Releases') }) %]</li>
       <li>[% l('{link|White Papers}', { link => doc_link('White_Papers') }) %]</li>
     </ul>
   </li>
