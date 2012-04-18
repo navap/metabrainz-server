@@ -22,4 +22,12 @@ sub by_amount : Path('by-amount') {
     $c->stash( donations => $donations );
 }
 
+sub nag_check : Path('nag-check') Arg(1)
+{
+    my ($self, $c, $editor) = @_;
+
+    my ($flag, $days) = $c->model('Donation')->get_nag_days($editor);
+    $c->stash( flag => $flag, days => $days );
+}
+
 1;

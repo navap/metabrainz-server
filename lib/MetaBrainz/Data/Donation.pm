@@ -118,6 +118,23 @@ sub get_all_by_amount {
     );
 }
 
+sub get_nag_days {
+    my ($self, $editor) = @_;
+
+    my $days_per_dollar = "7.5";
+
+    my $row = $self->sql->select_single_row_hash(
+           "SELECT ((amount + fee) * $days_per_dollar) - 
+                   ((extract(epoch from now()) - extract(epoch from payment_date)) / 86400) as nag
+              FROM donation 
+             WHERE lower(moderator) = lower(?)
+          ORDER BY nag DESC 
+             LIMIT 1", $editor
+    );
+    return (-1, 0) if !$row->{nag};
+    return ($row->{nag} >= 0 ? 0 : 1, $row->{nag});
+}
+
 sub verify_paypal_transaction {
     my ($self, $query) = @_;
     $query .= '&cmd=_notify-validate';
