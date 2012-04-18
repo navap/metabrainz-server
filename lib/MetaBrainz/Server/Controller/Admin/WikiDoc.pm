@@ -56,9 +56,11 @@ sub _strip_namespace : Private
     return $page
 }
 
-sub create : Local Args(0) RequireAuth(wiki_transcluder)
+sub create : Local Args(0)
 {
     my ($self, $c) = @_;
+
+    $c->authenticate({ realm => "metabrainz" });
 
     my $form = $c->form( form => 'Admin::WikiDoc::Add' );
 
@@ -74,9 +76,11 @@ sub create : Local Args(0) RequireAuth(wiki_transcluder)
     }
 }
 
-sub edit : Local Args(0) RequireAuth(wiki_transcluder)
+sub edit : Local Args(0)
 {
     my ($self, $c) = @_;
+
+    $c->authenticate({ realm => "metabrainz" });
 
     my $page = $c->req->params->{page};
     my $version = $c->model('WikiDocIndex')->get_page_version($page);
@@ -97,9 +101,11 @@ sub edit : Local Args(0) RequireAuth(wiki_transcluder)
     $c->stash( page => $page, version => $version );
 }
 
-sub delete : Local Args(0) RequireAuth(wiki_transcluder)
+sub delete : Local Args(0)
 {
     my ($self, $c) = @_;
+
+    $c->authenticate({ realm => "metabrainz" });
 
     my $page = $c->req->params->{page};
     my $version = $c->model('WikiDocIndex')->get_page_version($page);

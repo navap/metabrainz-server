@@ -13,6 +13,8 @@ MusicBrainz::Server::DatabaseConnectionFactory->register_databases(
     }
 );
 
+sub ADMIN_PASSWORD { "changeme" }
+
 sub DB_READ_ONLY { 0 }
 
 sub MB_LANGUAGES {qw()}

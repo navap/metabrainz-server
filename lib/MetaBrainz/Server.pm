@@ -6,6 +6,7 @@ BEGIN { extends 'Catalyst' }
 use aliased 'MusicBrainz::Server::Translation';
 
 require MusicBrainz::Server::Filters;
+use Catalyst qw/ Authentication /;
 
 __PACKAGE__->config(
     name => 'MetaBrainz::Server',
@@ -21,6 +22,25 @@ __PACKAGE__->config(
         ],
         ENCODING => 'UTF-8',
         PLUGIN_BASE => 'MusicBrainz::Server::Plugin',
+    },
+    authentication => {
+        default_realm => 'metabrainz',
+        realms => {
+            metabrainz => {
+                credential => {
+                    class => 'HTTP',
+                    type  => 'basic',
+                    password_type  => 'clear',
+                    password_field => 'password'
+                },
+                store => {
+                    class => 'Minimal',
+                    users => {
+                        admin => { password => &DBDefs::ADMIN_PASSWORD },
+                    },
+                },
+            },
+        }
     },
 );
 
