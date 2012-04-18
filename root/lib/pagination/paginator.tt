@@ -25,11 +25,5 @@
         <span>&#8250;</span>
         <span>&#187;</span>
     [% END %]
-
-    [% IF guess_search %]
-      <em>[%- l('Page {cur} of at least {total}', { cur => add_commas(pager.current_page), total => add_commas(pager.last_page) }) -%]</em>
-    [% ELSE %]
-      <em>[%- l('Page {cur} of {total}', { cur => add_commas(pager.current_page), total => add_commas(pager.last_page) }) -%]</em>
-    [% END %]
 </p>
 [% END %]
