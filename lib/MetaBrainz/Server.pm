@@ -6,6 +6,7 @@ BEGIN { extends 'Catalyst' }
 use aliased 'MusicBrainz::Server::Translation';
 
 require MusicBrainz::Server::Filters;
+require MetaBrainz::Server::Filters;
 use Catalyst qw/ Authentication /;
 
 __PACKAGE__->config(
@@ -15,6 +16,7 @@ __PACKAGE__->config(
     "View::Default" => {
         FILTERS => {
             'uri_decode' => \&MusicBrainz::Server::Filters::uri_decode,
+            'utc_date' => \&MetaBrainz::Server::Filters::utc_date,
         },
         TEMPLATE_EXTENSION => '.tt',
         PRE_PROCESS => [

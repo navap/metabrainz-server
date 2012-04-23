@@ -12,7 +12,7 @@
       <tbody>
       [% FOR donation=donations %]
         <tr class="[% loop.index % 2 == 0 ? 'ev' : 'odd' %]">
-          <td>[% donation.date %]</td>
+          <td>[% donation.date | utc_date %]</td>
           <td>
             <dl>
               <dt>[% donation.first_name | html %] [% donation.last_name | html %]
