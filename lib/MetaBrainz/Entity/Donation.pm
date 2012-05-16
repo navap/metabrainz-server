@@ -22,4 +22,10 @@ has [qw( fee amount )] => (
     is => 'rw',
 );
 
+has 'anon' => (
+    isa => 'Bool',
+    is => 'rw',
+    coerce => 1
+);
+
 1;
