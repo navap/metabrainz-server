@@ -112,6 +112,7 @@ sub get_all_by_amount {
              SELECT first_name, last_name, moderator AS editor, sum(amount) as amount,
                sum(fee) as fee
              FROM donation
+             WHERE anon = \'f\'
              GROUP BY first_name, last_name, moderator
          ) s
          ORDER BY amount DESC
