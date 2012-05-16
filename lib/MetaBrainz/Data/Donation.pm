@@ -10,6 +10,7 @@ use LWP::UserAgent;
 use MetaBrainz::TextWrapper;
 use MusicBrainz::Server::Data::Utils qw( query_to_list_limited );
 use PDF::API2;
+use Data::Dumper;
 
 with 'MusicBrainz::Server::Data::Role::Sql',
      'MusicBrainz::Server::Data::Role::NewFromRow';
@@ -175,7 +176,7 @@ sub try_log_donation {
         LogTransaction("blocked donor");
     }
 
-    elsif ($params->{payment_gross} < 0.00)
+    elsif ($params->{payment_gross} < 0.50)
     {
         LogTransaction("Tiny donation");
     }
@@ -186,6 +187,7 @@ sub try_log_donation {
         $self->sql->begin;
 
 	$params->{mc_fee} = 0.0 if (!exists $params->{mc_fee});
+        warn Dumper($params);
         $self->sql->insert_row('donation', {
             first_name       => $params->{first_name},
             last_name        => $params->{last_name},
