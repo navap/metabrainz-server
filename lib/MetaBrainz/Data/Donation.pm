@@ -1,5 +1,6 @@
 package MetaBrainz::Data::Donation;
 use Moose;
+use Data::Dumper;
 use namespace::autoclean;
 
 use DateTime::Format::Pg;
@@ -181,18 +182,20 @@ sub try_log_donation {
            lc($params->{business}) ne DBDefs::PAYPAL_BUSINESS)
     {
         $self->sql->begin;
+
+	$params->{mc_fee} = 0.0 if (!exists $params->{mc_fee});
         $self->sql->insert_row('donation', {
             first_name       => $params->{first_name},
             last_name        => $params->{last_name},
             email            => $params->{payer_email},
-            moderator        => $params->{custom},
+            moderator        => $params->{custom} || "",
             contact          => lc($params->{option_name1}) eq 'yes' ? 'y' : 'n',
             anon             => lc($params->{option_name2}) eq 'yes' ? 'y' : 'n',
-            address_street   => $params->{address_street},
-            address_city     => $params->{address_city},
-            address_state    => $params->{address_state},
-            address_postcode => $params->{address_zip},
-            address_country  => $params->{address_country},
+            address_street   => $params->{address_street} || "",
+            address_city     => $params->{address_city} || "",
+            address_state    => $params->{address_state} || "",
+            address_postcode => $params->{address_zip} || "",
+            address_country  => $params->{address_country} || "",
             paypal_trans_id  => $params->{txn_id},
             amount           => $params->{mc_gross} - $params->{mc_fee},
             fee              => $params->{mc_fee}
