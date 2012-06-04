@@ -15,12 +15,17 @@
           <td>[% donation.date | utc_date %]</td>
           <td>
             <dl>
-              <dt>[% donation.first_name | html %] [% donation.last_name | html %]
-                [%- IF donation.editor -%]
-                  (<a href="http://musicbrainz.org/user/[% donation.editor |url %]">[% donation.editor | html %]</a>)
-                [%- END -%]
-              </dt>
-              <dd>[% donation.memo | html %]</dd>
+              [%- IF donation.anon  -%]
+                 <dt>(anonymous)</dt>
+                 <dd></dd>
+              [%- ELSE -%]
+                  <dt>[% donation.first_name | html %] [% donation.last_name | html %]
+                    [%- IF donation.editor -%]
+                      (<a href="http://musicbrainz.org/user/[% donation.editor |url %]">[% donation.editor | html %]</a>)
+                    [%- END -%]
+                  </dt>
+                  <dd>[% donation.memo | html %]</dd>
+              [%- END -%]
             </dl>
           </td>
           <td>$[% donation.amount %]</td>

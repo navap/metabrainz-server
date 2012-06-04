@@ -51,7 +51,8 @@ sub _column_mapping {
         fee => 'fee',
         amount => 'amount',
         memo => 'memo',
-        date => 'payment_date'
+        date => 'payment_date',
+        anon => 'anon'
     }
 }
 
