@@ -1,12 +1,14 @@
 package MetaBrainz::Server;
-
 use Moose;
 BEGIN { extends 'Catalyst' }
+
+use DBDefs;
 
 use aliased 'MusicBrainz::Server::Translation';
 
 require MusicBrainz::Server::Filters;
 require MetaBrainz::Server::Filters;
+
 use Catalyst qw/ Authentication /;
 
 __PACKAGE__->config(
