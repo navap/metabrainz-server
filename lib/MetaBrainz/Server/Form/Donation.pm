@@ -59,7 +59,7 @@ has_field 'address.country' => (
 
 has_field payment_date => (
     type => 'Date',
-    format => 'mm-dd-yyyy'
+    format => '%m-%d-%Y'
 );
 
 has_field net_amount => (
