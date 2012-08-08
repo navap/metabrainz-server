@@ -54,4 +54,6 @@ sub CATALYST_DEBUG { 1 }
 sub PAYPAL_PRIMARY_EMAIL { 'paypal@metabrainz.org' }
 sub PAYPAL_BUSINESS { 'payment@metabrainz.org' }
 
+sub MAX_REQUEST_TIME { 30 }
+
 1;

@@ -84,4 +84,9 @@ sub form_posted {
     return $c->req->method eq 'POST';
 }
 
+before 'dispatch' => sub {
+    my $c = shift;
+    $c->model('MB')->context->connector->refresh;
+};
+
 1;
