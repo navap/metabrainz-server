@@ -1,12 +1,14 @@
 package MetaBrainz::Server;
-
 use Moose;
 BEGIN { extends 'Catalyst' }
+
+use DBDefs;
 
 use aliased 'MusicBrainz::Server::Translation';
 
 require MusicBrainz::Server::Filters;
 require MetaBrainz::Server::Filters;
+
 use Catalyst qw/ Authentication /;
 
 __PACKAGE__->config(
@@ -81,5 +83,10 @@ sub form_posted {
     my $c = shift;
     return $c->req->method eq 'POST';
 }
+
+before 'dispatch' => sub {
+    my $c = shift;
+    $c->model('MB')->context->connector->refresh;
+};
 
 1;

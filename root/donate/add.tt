@@ -1,3 +1,11 @@
+[%- MACRO field_errors(field) IF field.errors.size -%]
+  <ul>
+    [%- FOR error=field.erros -%]
+    <li>[% error %]</li>
+    [%- END -%]
+  </ul>
+[%- END -%]
+
 [% WRAPPER 'layout.tt' %]
   <h1>[% l('Enter Donation') %]</h1>
 
@@ -9,24 +17,32 @@
       [% l('It seems that your form submission has some errors. Please double
             check the information below and try again.') %]
     </p>
+    <ul>
+      [%- FOR error=form.errors -%]
+      <li>[% error %]</li>
+      [%- END -%]
+    </ul>
     [% END %]
 
     <div class="row">
       <label for="[% form.field('name.first').id %]">[% l('First name:') %]</label>
       <input id="[% form.field('name.first').id %]" name="[% form.field('name.first').html_name %]"
              value="[% form.field('name.first').value %]" />
+      [% field_errors(form.field('name.first')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('name.last').id %]">[% l('Last name:') %]</label>
       <input id="[% form.field('name.last').id %]" name="[% form.field('name.last').html_name %]"
              value="[% form.field('name.last').value %]" />
+      [% field_errors(form.field('name.last')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('email').id %]">[% l('Email:') %]</label>
       <input id="[% form.field('email').id %]" name="[% form.field('email').html_name %]"
              value="[% form.field('email').value %]" />
+      [% field_errors(form.field('email')) %]
     </div>
 
     <div class="row no-label">
@@ -45,30 +61,35 @@
       <label for="[% form.field('address.street').id %]">[% l('Street:') %]</label>
       <input id="[% form.field('address.street').id %]" name="[% form.field('address.street').html_name %]"
              value="[% form.field('address.street').value %]" />
+      [% field_errors(form.field('address.street')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('address.city').id %]">[% l('City:') %]</label>
       <input id="[% form.field('address.city').id %]" name="[% form.field('address.city').html_name %]"
              value="[% form.field('address.city').value %]" />
+      [% field_errors(form.field('address.city')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('address.state').id %]">[% l('State:') %]</label>
       <input id="[% form.field('address.state').id %]" name="[% form.field('address.state').html_name %]"
              value="[% form.field('address.state').value %]" />
+      [% field_errors(form.field('address.state')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('address.postcode').id %]">[% l('Zip/Post Code:') %]</label>
       <input id="[% form.field('address.postcode').id %]" name="[% form.field('address.postcode').html_name %]"
              value="[% form.field('address.postcode').value %]" />
+      [% field_errors(form.field('address.postcode')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('address.country').id %]">[% l('Country:') %]</label>
       <input id="[% form.field('address.country').id %]" name="[% form.field('address.country').html_name %]"
              value="[% form.field('address.country').value %]" />
+      [% field_errors(form.field('address.country')) %]
     </div>
 
     <div class="row">
@@ -76,30 +97,35 @@
       <input id="[% form.field('payment_date').id %]" name="[% form.field('payment_date').html_name %]"
              value="[% form.field('payment_date').value %]" />
       (use the format <code>MM-DD-YYYY</code> or leave blank to use the current date)
+      [% field_errors(form.field('payment_date')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('net_amount').id %]">[% l('Net donation:') %]</label>
       <input id="[% form.field('net_amount').id %]" name="[% form.field('net_amount').html_name %]"
              value="[% form.field('net_amount').value %]" /> USD
+      [% field_errors(form.field('net_amount')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('fee').id %]">[% l('Fee:') %]</label>
       <input id="[% form.field('fee').id %]" name="[% form.field('fee').html_name %]"
              value="[% form.field('fee').value %]" /> USD
+      [% field_errors(form.field('fee')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('editor_name').id %]">[% l('Editor:') %]</label>
       <input id="[% form.field('editor_name').id %]" name="[% form.field('editor_name').html_name %]"
              value="[% form.field('editor_name').value %]" />
+      [% field_errors(form.field('editor_name')) %]
     </div>
 
     <div class="row">
       <label for="[% form.field('memo').id %]">[% l('Memo:') %]</label>
       <textarea id="[% form.field('memo').id %]" name="[% form.field('memo').html_name %]"
                 rows="5" cols="80">[% form.field('memo').value %]</textarea>
+      [% field_errors(form.field('memo')) %]
     </div>
 
     <div class="row no-label">

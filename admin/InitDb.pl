@@ -92,8 +92,7 @@ sub RunSQLScript
     sub get_sql
     {
         my ($name) = shift;
-        $mb = Databases->get_connection($name);
-        $sql = Sql->new($mb->dbh);
+        return Databases->get_connection($name)->sql;
     }
 }
 
@@ -254,7 +253,7 @@ my $started = 1;
 
 if ($fCreateDB)
 {
-    Create("READWRITE");
+    Create("METABRAINZ");
 }
 
 if ($mode eq "MODE_NO_TABLES") { } # nothing to do
