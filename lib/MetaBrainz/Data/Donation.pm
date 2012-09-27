@@ -1,5 +1,6 @@
 package MetaBrainz::Data::Donation;
 use Moose;
+use Data::Dumper;
 use namespace::autoclean;
 
 use DateTime::Format::Pg;
@@ -9,6 +10,7 @@ use LWP::UserAgent;
 use MetaBrainz::TextWrapper;
 use MusicBrainz::Server::Data::Utils qw( query_to_list_limited );
 use PDF::API2;
+use Data::Dumper;
 
 with 'MusicBrainz::Server::Data::Role::Sql',
      'MusicBrainz::Server::Data::Role::NewFromRow';
@@ -49,7 +51,8 @@ sub _column_mapping {
         fee => 'fee',
         amount => 'amount',
         memo => 'memo',
-        date => 'payment_date'
+        date => 'payment_date',
+        anon => 'anon'
     }
 }
 
@@ -110,12 +113,30 @@ sub get_all_by_amount {
              SELECT first_name, last_name, moderator AS editor, sum(amount) as amount,
                sum(fee) as fee
              FROM donation
+             WHERE anon = \'f\'
              GROUP BY first_name, last_name, moderator
          ) s
          ORDER BY amount DESC
          OFFSET ?',
         $offset
     );
+}
+
+sub get_nag_days {
+    my ($self, $editor) = @_;
+
+    my $days_per_dollar = "7.5";
+
+    my $row = $self->sql->select_single_row_hash(
+           "SELECT ((amount + fee) * $days_per_dollar) - 
+                   ((extract(epoch from now()) - extract(epoch from payment_date)) / 86400) as nag
+              FROM donation 
+             WHERE lower(moderator) = lower(?)
+          ORDER BY nag DESC 
+             LIMIT 1", $editor
+    );
+    return (-1, 0) if !$row->{nag};
+    return ($row->{nag} >= 0 ? 0 : 1, $row->{nag});
 }
 
 sub verify_paypal_transaction {
@@ -155,7 +176,7 @@ sub try_log_donation {
         LogTransaction("blocked donor");
     }
 
-    elsif ($params->{payment_gross} < 0.00)
+    elsif ($params->{payment_gross} < 0.50)
     {
         LogTransaction("Tiny donation");
     }
@@ -164,18 +185,21 @@ sub try_log_donation {
            lc($params->{business}) ne DBDefs::PAYPAL_BUSINESS)
     {
         $self->sql->begin;
+
+	$params->{mc_fee} = 0.0 if (!exists $params->{mc_fee});
+        warn Dumper($params);
         $self->sql->insert_row('donation', {
             first_name       => $params->{first_name},
             last_name        => $params->{last_name},
             email            => $params->{payer_email},
-            moderator        => $params->{custom},
+            moderator        => $params->{custom} || "",
             contact          => lc($params->{option_name1}) eq 'yes' ? 'y' : 'n',
             anon             => lc($params->{option_name2}) eq 'yes' ? 'y' : 'n',
-            address_street   => $params->{address_street},
-            address_city     => $params->{address_city},
-            address_state    => $params->{address_state},
-            address_postcode => $params->{address_zip},
-            address_country  => $params->{address_country},
+            address_street   => $params->{address_street} || "",
+            address_city     => $params->{address_city} || "",
+            address_state    => $params->{address_state} || "",
+            address_postcode => $params->{address_zip} || "",
+            address_country  => $params->{address_country} || "",
             paypal_trans_id  => $params->{txn_id},
             amount           => $params->{mc_gross} - $params->{mc_fee},
             fee              => $params->{mc_fee}

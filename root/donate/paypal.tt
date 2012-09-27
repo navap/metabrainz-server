@@ -19,8 +19,8 @@
           Picard/MusicBrainz stop nagging you.') %]
   </strong></p>
 
-  <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-    <input type="hidden" name="business" value="metab_1320426474_biz@ocharles.org.uk" />
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="business" value="donations&#x0040;metabrainz.org" />
     <input type="hidden" name="no_shipping" value="2" />
     <input type="hidden" name="return" value="[% c.uri_for_action('/donate/complete') %]" />
     <input type="hidden" name="cancel_return"
