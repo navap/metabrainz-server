@@ -101,12 +101,4 @@
   </div>
   <div style="clear: both"></div>
 
-  <h2>[% l('Donating via Direct Bank Transfer') %]</h2>
-
-  <p>[% l('You may donate to the MetaBrainz Foundation via direct bank transfer.
-  Please {doc|contact us} for direct transfer instructions.',
-  { doc => doc_link('Contact') }) %]</p>
-
-
-
 [% END %]
