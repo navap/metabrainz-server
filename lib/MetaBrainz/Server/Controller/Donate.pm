@@ -4,6 +4,9 @@ use namespace::autoclean;
 
 use Scalar::Util qw( looks_like_number );
 use URI;
+use LWP::UserAgent;
+use DBDefs;
+use JSON;
 
 sub paypal : Local
 {
@@ -20,8 +23,72 @@ sub paypal : Local
     );
 }
 
+sub wepay : Local
+{
+    my ($self, $c) = @_;
+
+    my $amount  = looks_like_number($c->req->params->{amount})
+                    ? $c->req->params->{amount} : 10;
+    my $recur  = looks_like_number($c->req->params->{recur})
+                    ? 1 : 0;
+
+    $c->stash(
+        recur => $recur
+    );
+
+    my $form = $c->form(
+        form => 'WePay',
+        init_object => {amount => $amount,
+                        recur => $recur}
+    );
+
+    if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
+        my $ua = LWP::UserAgent->new(agent => 'metabrainz-server');
+        my $type = $form->field('recur')->value ? 'preapproval' : 'checkout';
+        my $url = 'https://wepayapi.com/v2/';
+        if (DBDefs::WEPAY_USE_STAGING) {
+            $url = 'https://stage.wepayapi.com/v2/';
+        }
+        my $content = {
+            account_id => DBDefs::WEPAY_ACCOUNT_ID,
+            amount => $form->field('amount')->value,
+            mode => 'regular',
+            redirect_uri => $c->uri_for_action('/donate/complete'),
+        };
+        if ($form->field('recur')->value) {
+            $content->{period} = 'monthly';
+            $content->{auto_recur} = 'true';
+            $content->{short_description} = 'Recurring donation to MetaBrainz Foundation';
+        } else {
+            $content->{type} = 'DONATION';
+            $content->{short_description} = 'Donation to MetaBrainz Foundation';
+        }
+        if ($c->uri_for_action('/donate/wepay_ipn') !~ /localhost/) {
+            $content->{callback_uri} = $c->uri_for_action('/donate/wepay_ipn');
+        }
+        my $checkout = $ua->post($url . '/' . $type . '/create',
+                                 'Authorization' => 'Bearer ' . DBDefs::WEPAY_ACCESS_TOKEN,
+                                 Content => $content);
+        my $data = JSON->new->utf8->decode($checkout->content);
+
+        if ($data->{error}) {
+            $c->res->redirect($c->uri_for_action('/donate/error', { 'message' => $data->{error_description} }));
+        } else {
+            $c->res->redirect($data->{$type . '_uri'});
+            $c->detach;
+        }
+    }
+}
+
 sub complete : Local { }
 sub cancelled : Local { }
+sub error : Local {
+    my ($self, $c) = @_;
+    if ($c->req->query_params->{message}) {
+       $c->stash->{message} = $c->req->query_params->{message};
+    }
+}
+
 sub paypal_ipn : Path('paypal-ipn') {
     my ($self, $c) = @_;
 
@@ -38,6 +105,22 @@ sub paypal_ipn : Path('paypal-ipn') {
     }
 
     $c->model('Donation')->try_log_donation($c->req->params);
+    $c->res->body('');
+    $c->res->status(200);
+    $c->detach;
+}
+
+sub wepay_ipn : Path('wepay-ipn') {
+    my ($self, $c) = @_;
+
+    # TODO write these methods
+    #if ($c->req->params->{checkout_id}) {
+    #    $c->model('Donation')->verify_and_log_wepay_checkout($checkout_id);
+    #}
+    #elsif ($c->req->params->{preapproval_id}) {
+    #    $c->model('Donation')->verify_and_log_wepay_preapproval($checkout_id);
+    #}
+
     $c->res->body('');
     $c->res->status(200);
     $c->detach;
