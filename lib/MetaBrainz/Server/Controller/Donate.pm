@@ -59,6 +59,7 @@ sub wepay : Local
             amount => $form->field('amount')->value,
             mode => 'regular',
             redirect_uri => $c->uri_for_action('/donate/complete'),
+            require_shipping => 1
         };
         if ($form->field('recur')->value) {
             $content->{period} = 'monthly';
