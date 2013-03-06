@@ -15,8 +15,7 @@ has_field anonymous => (
 );
 
 has_field recur => (
-    type => 'Boolean',
-    coerce => 1
+    type => 'Boolean'
 );
 
 has_field amount => (
@@ -24,7 +23,7 @@ has_field amount => (
     required => 1
 );
 
-has_field editor_name => (
+has_field editor => (
     type => '+MusicBrainz::Server::Form::Field::Text'
 );
 

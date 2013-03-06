@@ -30,7 +30,7 @@ sub wepay : Local
     my $amount  = looks_like_number($c->req->params->{amount})
                     ? $c->req->params->{amount} : 10;
     my $recur  = looks_like_number($c->req->params->{recur})
-                    ? 1 : 0;
+                    ? $c->req->params->{recur} : 0;
 
     $c->stash(
         recur => $recur
@@ -45,6 +45,11 @@ sub wepay : Local
     if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
         my $ua = LWP::UserAgent->new(agent => 'metabrainz-server');
         my $type = $form->field('recur')->value ? 'preapproval' : 'checkout';
+
+        my $editor = $form->field('editor')->value || 'NONE';
+        my $anonymous = $form->field('anonymous')->value // '0';
+        my $can_contact = $form->field('can_contact')->value // '0';
+
         my $url = 'https://wepayapi.com/v2/';
         if (DBDefs::WEPAY_USE_STAGING) {
             $url = 'https://stage.wepayapi.com/v2/';
@@ -63,8 +68,8 @@ sub wepay : Local
             $content->{type} = 'DONATION';
             $content->{short_description} = 'Donation to MetaBrainz Foundation';
         }
-        if ($c->uri_for_action('/donate/wepay_ipn') !~ /localhost/) {
-            $content->{callback_uri} = $c->uri_for_action('/donate/wepay_ipn');
+        if ($c->uri_for_action('/donate/wepay_ipn', [$editor, $anonymous, $can_contact]) !~ /localhost/) {
+            $content->{callback_uri} = $c->uri_for_action('/donate/wepay_ipn', [$editor, $anonymous, $can_contact]);
         }
         my $checkout = $ua->post($url . '/' . $type . '/create',
                                  'Authorization' => 'Bearer ' . DBDefs::WEPAY_ACCESS_TOKEN,
@@ -104,22 +109,29 @@ sub paypal_ipn : Path('paypal-ipn') {
         $c->detach;
     }
 
-    $c->model('Donation')->try_log_donation($c->req->params);
+    $c->model('Donation')->try_log_paypal_donation($c->req->params);
     $c->res->body('');
     $c->res->status(200);
     $c->detach;
 }
 
-sub wepay_ipn : Path('wepay-ipn') {
-    my ($self, $c) = @_;
+sub wepay_ipn : Path('wepay-ipn') Args(3) {
+    my ($self, $c, $editor, $anonymous, $can_email) = @_;
 
-    # TODO write these methods
-    #if ($c->req->params->{checkout_id}) {
-    #    $c->model('Donation')->verify_and_log_wepay_checkout($checkout_id);
-    #}
-    #elsif ($c->req->params->{preapproval_id}) {
-    #    $c->model('Donation')->verify_and_log_wepay_preapproval($checkout_id);
-    #}
+    my $res = 1;
+    if ($c->req->params->{checkout_id}) {
+        my $checkout_id = $c->req->params->{checkout_id};
+        $editor = "" if $editor eq 'NONE';
+        $res = $c->model('Donation')->verify_and_log_wepay_checkout($checkout_id,
+                                                                    $editor,
+                                                                    $anonymous,
+                                                                    $can_email);
+    }
+
+    unless ($res) {
+        $c->res->status(500);
+        $c->detach;
+    }
 
     $c->res->body('');
     $c->res->status(200);
