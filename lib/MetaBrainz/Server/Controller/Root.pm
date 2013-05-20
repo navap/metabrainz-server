@@ -40,7 +40,8 @@ sub end : ActionClass('RenderView') {
     $c->stash(
         server_details => {
             development_server => 1
-        }
+        },
+        google_analytics_code => &DBDefs::GOOGLE_ANALYTICS_CODE
     );
 }
 

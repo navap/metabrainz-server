@@ -1,0 +1,9 @@
+[%- WRAPPER 'layout.tt' title=l('Admin home') %]
+  <h1>[% l('Admin home') %]</h1>
+
+  <ul>
+    <li><a href="/admin/add-donation">[% l('Manually add a donation') %]</a></li>
+    <li><a href="/admin/wikidoc">[% l('Transclude documentation') %]</a></li>
+  </ul>
+
+[% END %]

@@ -1,11 +1,15 @@
 package MetaBrainz::Server;
-
 use Moose;
 BEGIN { extends 'Catalyst' }
+
+use DBDefs;
 
 use aliased 'MusicBrainz::Server::Translation';
 
 require MusicBrainz::Server::Filters;
+require MetaBrainz::Server::Filters;
+
+use Catalyst qw/ Authentication /;
 
 __PACKAGE__->config(
     name => 'MetaBrainz::Server',
@@ -14,6 +18,7 @@ __PACKAGE__->config(
     "View::Default" => {
         FILTERS => {
             'uri_decode' => \&MusicBrainz::Server::Filters::uri_decode,
+            'utc_date' => \&MetaBrainz::Server::Filters::utc_date,
         },
         TEMPLATE_EXTENSION => '.tt',
         PRE_PROCESS => [
@@ -21,6 +26,25 @@ __PACKAGE__->config(
         ],
         ENCODING => 'UTF-8',
         PLUGIN_BASE => 'MusicBrainz::Server::Plugin',
+    },
+    authentication => {
+        default_realm => 'metabrainz',
+        realms => {
+            metabrainz => {
+                credential => {
+                    class => 'HTTP',
+                    type  => 'basic',
+                    password_type  => 'clear',
+                    password_field => 'password'
+                },
+                store => {
+                    class => 'Minimal',
+                    users => {
+                        admin => { password => &DBDefs::ADMIN_PASSWORD },
+                    },
+                },
+            },
+        }
     },
 );
 
@@ -59,5 +83,10 @@ sub form_posted {
     my $c = shift;
     return $c->req->method eq 'POST';
 }
+
+before 'dispatch' => sub {
+    my $c = shift;
+    $c->model('MB')->context->connector->refresh;
+};
 
 1;

@@ -30,6 +30,11 @@ server {
 		charset utf-8;
 	}
 
+	location = /favicon.ico {
+		root /home/metabrainz/metabrainz-server/root;
+		expires 7d;
+	}
+
 	location / {
 		fastcgi_pass	127.0.0.1:55901;
 
