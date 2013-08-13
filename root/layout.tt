@@ -7,13 +7,14 @@
     [% BLOCK layout_head %][% END %]
     [%- INCLUDE layout_head -%]
     <meta name="google-site-verification" content="RNuXvY-W9lT_oQAhump_R0brorZdDYv4a_UayxvHcus" />
+    [% BLOCK extra_gaq %][% END %]
     [% IF google_analytics_code %]
       <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', '[% google_analytics_code %]']);
+        [%- INCLUDE extra_gaq -%]
         _gaq.push(['_trackPageview']);
-
         (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
