@@ -60,6 +60,7 @@
       <label class="inline" for="on0">
         [% l('You may email me about future fundraising events (this will be very seldom)') %]
       </label>
+      <input type="hidden" name="os0" value="dummy" />
     </div>
 
     <div class="row no-label">
@@ -68,6 +69,7 @@
         [% l('I would like this donation to be anonymous (don\'t
               list my name on the finances page)') %]
       </label>
+      <input type="hidden" name="os1" value="dummy" />
     </div>
 
     <div class="row no-label">
