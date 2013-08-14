@@ -188,13 +188,25 @@ sub try_log_paypal_donation {
 
         $params->{mc_fee} = 0.0 if (!exists $params->{mc_fee});
         warn Dumper($params);
+        my $anonymous = 'n';
+        if ((lc($params->{option_name1}) eq 'anonymous' && lc($params->{option_selection1} eq 'yes') ||
+            (lc($params->{option_name2}) eq 'anonymous' && lc($params->{option_selection2} eq 'yes') ||
+            (lc($params->{option_name2}) eq 'yes')) {
+            $anonymous = 'y';
+        }
+        my $contact = 'n';
+        if ((lc($params->{option_name1}) eq 'contact' && lc($params->{option_selection1} eq 'yes') ||
+            (lc($params->{option_name2}) eq 'contact' && lc($params->{option_selection2} eq 'yes') ||
+            (lc($params->{option_name1}) eq 'yes')) {
+            $contact = 'y';
+        }
         $self->sql->insert_row('donation', {
             first_name       => $params->{first_name},
             last_name        => $params->{last_name},
             email            => $params->{payer_email},
             moderator        => $params->{custom} || "",
-            contact          => lc($params->{option_selection1}) eq 'yes' || lc($params->{option_name1}) eq 'yes' ? 'y' : 'n',
-            anon             => lc($params->{option_selection2}) eq 'yes' || lc($params->{option_name2}) eq 'yes' ? 'y' : 'n',
+            contact          => $contact,
+            anon             => $anonymous,
             address_street   => $params->{address_street} || "",
             address_city     => $params->{address_city} || "",
             address_state    => $params->{address_state} || "",
