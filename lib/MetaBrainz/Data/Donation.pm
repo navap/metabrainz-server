@@ -189,14 +189,14 @@ sub try_log_paypal_donation {
         $params->{mc_fee} = 0.0 if (!exists $params->{mc_fee});
         warn Dumper($params);
         my $anonymous = 'n';
-        if ((lc($params->{option_name1}) eq 'anonymous' && lc($params->{option_selection1} eq 'yes') ||
-            (lc($params->{option_name2}) eq 'anonymous' && lc($params->{option_selection2} eq 'yes') ||
+        if ((lc($params->{option_name1}) eq 'anonymous' && lc($params->{option_selection1}) eq 'yes') ||
+            (lc($params->{option_name2}) eq 'anonymous' && lc($params->{option_selection2}) eq 'yes') ||
             (lc($params->{option_name2}) eq 'yes')) {
             $anonymous = 'y';
         }
         my $contact = 'n';
-        if ((lc($params->{option_name1}) eq 'contact' && lc($params->{option_selection1} eq 'yes') ||
-            (lc($params->{option_name2}) eq 'contact' && lc($params->{option_selection2} eq 'yes') ||
+        if ((lc($params->{option_name1}) eq 'contact' && lc($params->{option_selection1}) eq 'yes') ||
+            (lc($params->{option_name2}) eq 'contact' && lc($params->{option_selection2}) eq 'yes') ||
             (lc($params->{option_name1}) eq 'yes')) {
             $contact = 'y';
         }
