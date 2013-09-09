@@ -1,3 +1,12 @@
+[%- BLOCK extra_gaq %]
+_gaq.push(['_setCustomVar',
+    1,
+    'Donated',
+    'No',
+    2
+]);
+[% END -%]
+
 [% WRAPPER 'layout.tt' title=l('Donation Cancelled') %]
   <p>[% l('We\'re sorry to see that you won\'t be donating today. We hope that
            you\'ll change your mind!') %]</p>

@@ -56,15 +56,17 @@
     </div>
 
     <div class="row no-label">
-      <input type="checkbox" id="on0" name="on0" value="yes" />
-      <label class="inline" for="on0">
+      <input type="hidden" name="on0" value="contact" />
+      <input type="checkbox" id="os0" name="os0" value="yes" />
+      <label class="inline" for="os0">
         [% l('You may email me about future fundraising events (this will be very seldom)') %]
       </label>
     </div>
 
     <div class="row no-label">
-      <input type="checkbox" id="on1" name="on1" value="yes" />
-      <label class="inline" for="on1">
+      <input type="hidden" name="on1" value="anonymous" />
+      <input type="checkbox" id="os1" name="os1" value="yes" />
+      <label class="inline" for="os1">
         [% l('I would like this donation to be anonymous (don\'t
               list my name on the finances page)') %]
       </label>
