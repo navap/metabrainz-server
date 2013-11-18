@@ -35,6 +35,13 @@ server {
 		expires 7d;
 	}
 
+	location = /robots.txt {
+		root /home/metabrainz/metabrainz-server/root;
+		default_type text/plain;
+		try_files	$uri;
+		expires	1h;
+	}
+
 	location / {
 		fastcgi_pass	127.0.0.1:55901;
 
