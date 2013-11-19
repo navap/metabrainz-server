@@ -14,7 +14,7 @@
     </ul>
   </li>
   <li>
-    <a href="http://blog.musicbrainz.org/?cat=8">Blog</a>
+    <a href="http://blog.musicbrainz.org/category/metabrainz/">Blog</a>
   </li>
   <li>
     [% l('{link|Finances}', { link => doc_link('Finances') }) %]
